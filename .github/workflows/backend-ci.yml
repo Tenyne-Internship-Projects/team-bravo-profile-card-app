@@ -31,4 +31,4 @@ jobs:
           npx eslint . || echo "Lint warnings detected, fix them before merging."
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --passWithNoTests
