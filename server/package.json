@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "dev": "nodemon server/server.js",
-    "test": "jest"
+    "test": "jest --testMatch='**/tests/**/*.test.js'"
   },
   "keywords": [
     "express",
