@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URI") // This reads from your .env file
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  fullname  String 
+  email     String   @unique
+  password  String   
+  createdAt DateTime @default(now())
+   verified  Boolean  @default(false)
+  codes     VerificationCode[]
+
+  profile   Profile?
+  @@map("users")
+}
+
+model VerificationCode {
+  id        String   @id @default(uuid())
+  code      String
+  expiresAt DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+
+  fullName        String
+  gender          String
+  age             Int
+  dateOfBirth     DateTime
+  profession      String
+  specialization  String
+  location        String
+  bio             String?
+  skills          String[]
+  avatarUrl       String?
+  documents       String[]
+
+  linkedIn        String?
+  github          String?
+  primaryEmail    String
+  phoneNumber     String
+  salaryExpectation Int?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+
