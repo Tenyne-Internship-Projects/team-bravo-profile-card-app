@@ -10,7 +10,8 @@ const morgan = require("morgan");
 const { errorLogger } = require("./middlewares/errorLogger");
 
 const Sentry = require("@sentry/node");
-
+const authRoute = require("./routes/authRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 const isProduction = process.env.NODE_ENV === "production";
 
 // Initialize Sentry before anything else
@@ -38,8 +39,8 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 // Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/profile", require("./routes/profileRoutes"));
+app.use("/api/auth", authRoute);
+app.use("/api/profile", profileRoutes);
 
 app.get("/debug-sentry", (req, res) => {
   throw new Error("Sentry test error");

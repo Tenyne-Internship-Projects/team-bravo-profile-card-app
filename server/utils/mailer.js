@@ -1,7 +1,6 @@
 // utils/mailer.js
-const nodemailer = require('nodemailer');
-require('dotenv').config(); // load .env variables
-
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 // Create transporter
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST, // e.g., email-smtp.eu-north-1.amazonaws.com

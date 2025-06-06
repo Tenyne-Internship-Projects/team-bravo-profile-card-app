@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcryptjs");
 
 // Get all users
 const getAllUsers = async (req, res) => {
@@ -70,6 +71,7 @@ const updateUserProfile = async (req, res) => {
     primaryEmail,
     phoneNumber,
     salaryExpectation,
+    password,
   } = req.body;
 
   const avatarFile = req.files?.avatar?.[0];
@@ -82,6 +84,19 @@ const updateUserProfile = async (req, res) => {
   const documents = documentFiles.map(
     (file) => `/uploads/badges/${file.filename}`
   );
+
+  // Hash password only if provided
+  const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
+
+  // Safely parse skills JSON, default to undefined if invalid or empty
+  let parsedSkills;
+  if (skills) {
+    try {
+      parsedSkills = JSON.parse(skills);
+    } catch {
+      parsedSkills = undefined;
+    }
+  }
 
   try {
     const user = await prisma.user.findUnique({
@@ -97,7 +112,7 @@ const updateUserProfile = async (req, res) => {
         fullname,
         profile: {
           update: {
-            fullName: fullname,
+            fullName: fullname, // Confirm this matches your schema casing
             gender,
             age: age ? Number(age) : undefined,
             dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
@@ -105,12 +120,14 @@ const updateUserProfile = async (req, res) => {
             specialization,
             location,
             bio,
-            skills: skills ? JSON.parse(skills) : undefined,
+            skills: parsedSkills,
             avatarUrl,
             documents: documents.length > 0 ? documents : undefined,
             linkedIn,
             github,
             primaryEmail,
+            // Only include password if hashedPassword exists
+            ...(hashedPassword && { password: hashedPassword }),
             phoneNumber,
             salaryExpectation: salaryExpectation
               ? Number(salaryExpectation)
@@ -133,7 +150,7 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-// ✅ Delete user account
+// Delete user account
 const deleteUserAccount = async (req, res) => {
   const { userId } = req.params;
 
