@@ -8,6 +8,8 @@ const { connectDB } = require("./config/db");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { errorLogger } = require("./middlewares/errorLogger");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/profileRoutes");
 
 const Sentry = require("@sentry/node");
 
@@ -32,14 +34,15 @@ if (isProduction) {
 }
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("dev"));
 
-// Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/profile", require("./routes/profileRoutes"));
+// // Routes
+
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", userRoutes);
 
 app.get("/debug-sentry", (req, res) => {
   throw new Error("Sentry test error");
