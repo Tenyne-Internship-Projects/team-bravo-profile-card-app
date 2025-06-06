@@ -8,10 +8,11 @@ const { connectDB } = require("./config/db");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { errorLogger } = require("./middlewares/errorLogger");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/profileRoutes");
 
 const Sentry = require("@sentry/node");
-const authRoute = require("./routes/authRoutes");
-const profileRoutes = require("./routes/profileRoutes");
+
 const isProduction = process.env.NODE_ENV === "production";
 
 // Initialize Sentry before anything else
@@ -33,14 +34,15 @@ if (isProduction) {
 }
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("dev"));
 
-// Routes
-app.use("/api/auth", authRoute);
-app.use("/api/profile", profileRoutes);
+// // Routes
+
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", userRoutes);
 
 app.get("/debug-sentry", (req, res) => {
   throw new Error("Sentry test error");

@@ -1,4 +1,3 @@
-// tests/user.controller.test.js
 jest.mock("@prisma/client");
 jest.mock("bcryptjs");
 
@@ -13,17 +12,22 @@ const {
 
 const prisma = new PrismaClient();
 
+// Mock response generator
+const mockResponse = () => {
+  const res = {};
+  res.status = jest.fn(() => res);
+  res.json = jest.fn(() => res);
+  return res;
+};
+
 describe("User Controller", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Reset mocks for prisma.user methods
     prisma.user.findMany = jest.fn();
     prisma.user.findUnique = jest.fn();
     prisma.user.update = jest.fn();
     prisma.user.delete = jest.fn();
-
-    // Mock bcrypt.hash to always resolve a hashed password
     bcrypt.hash = jest.fn((password) => Promise.resolve("hashed_" + password));
   });
 
@@ -36,10 +40,7 @@ describe("User Controller", () => {
       prisma.user.findMany.mockResolvedValue(mockUsers);
 
       const req = {};
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       await getAllUsers(req, res);
 
@@ -47,6 +48,7 @@ describe("User Controller", () => {
         include: { profile: true },
         orderBy: { createdAt: "desc" },
       });
+
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         message: "All users fetched successfully",
@@ -60,10 +62,7 @@ describe("User Controller", () => {
       prisma.user.findMany.mockRejectedValue(error);
 
       const req = {};
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       await getAllUsers(req, res);
 
@@ -82,10 +81,7 @@ describe("User Controller", () => {
       prisma.user.findUnique.mockResolvedValue(mockUser);
 
       const req = { params: { userId } };
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       await getUserProfile(req, res);
 
@@ -93,6 +89,7 @@ describe("User Controller", () => {
         where: { id: userId },
         include: { profile: true },
       });
+
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         message: "User profile fetched successfully",
@@ -101,21 +98,15 @@ describe("User Controller", () => {
     });
 
     it("should return 404 if user not found", async () => {
-      const userId = "1";
       prisma.user.findUnique.mockResolvedValue(null);
 
-      const req = { params: { userId } };
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const req = { params: { userId: "1" } };
+      const res = mockResponse();
 
       await getUserProfile(req, res);
 
       expect(res.status).toHaveBeenCalledWith(404);
-      expect(res.json).toHaveBeenCalledWith({
-        message: "User not found",
-      });
+      expect(res.json).toHaveBeenCalledWith({ message: "User not found" });
     });
 
     it("should handle errors", async () => {
@@ -123,12 +114,169 @@ describe("User Controller", () => {
       prisma.user.findUnique.mockRejectedValue(error);
 
       const req = { params: { userId: "1" } };
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       await getUserProfile(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: "Internal server error",
+        error: error.message,
+      });
+    });
+  });
+
+  describe("updateUserProfile", () => {
+    it("should update user profile successfully without password or files", async () => {
+      const userId = "1";
+      const reqBody = {
+        fullname: "John Updated",
+        age: "30",
+        skills: JSON.stringify(["js", "node"]),
+      };
+
+      prisma.user.findUnique.mockResolvedValue({ id: userId, profile: {} });
+
+      prisma.user.update.mockResolvedValue({
+        id: userId,
+        fullname: reqBody.fullname,
+        profile: {
+          fullName: reqBody.fullname,
+          age: 30,
+          skills: ["js", "node"],
+        },
+      });
+
+      const req = {
+        params: { userId },
+        body: reqBody,
+        files: {},
+      };
+      const res = mockResponse();
+
+      await updateUserProfile(req, res);
+
+      expect(bcrypt.hash).not.toHaveBeenCalled();
+
+      expect(prisma.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: userId },
+          data: expect.objectContaining({
+            fullname: reqBody.fullname,
+            profile: expect.objectContaining({
+              update: expect.objectContaining({
+                fullName: reqBody.fullname,
+                age: 30,
+                skills: ["js", "node"],
+              }),
+            }),
+          }),
+          include: { profile: true },
+        })
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: "User profile updated successfully",
+          user: expect.any(Object),
+        })
+      );
+    });
+
+    it("should update user profile with password and files", async () => {
+      const userId = "1";
+      const reqBody = {
+        fullname: "John Updated",
+        password: "newpassword",
+        skills: JSON.stringify(["js", "node"]),
+      };
+
+      prisma.user.findUnique.mockResolvedValue({ id: userId, profile: {} });
+
+      prisma.user.update.mockResolvedValue({
+        id: userId,
+        fullname: reqBody.fullname,
+        profile: {
+          fullName: reqBody.fullname,
+          password: "hashed_newpassword",
+          avatarUrl: "/uploads/badges/avatar.jpg",
+          documents: ["/uploads/badges/doc1.pdf", "/uploads/badges/doc2.pdf"],
+          skills: ["js", "node"],
+        },
+      });
+
+      const req = {
+        params: { userId },
+        body: reqBody,
+        files: {
+          avatar: [{ filename: "avatar.jpg" }],
+          documents: [{ filename: "doc1.pdf" }, { filename: "doc2.pdf" }],
+        },
+      };
+      const res = mockResponse();
+
+      await updateUserProfile(req, res);
+
+      expect(bcrypt.hash).toHaveBeenCalledWith("newpassword", 10);
+
+      expect(prisma.user.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            fullname: reqBody.fullname,
+            profile: expect.objectContaining({
+              update: expect.objectContaining({
+                fullName: reqBody.fullname,
+                password: "hashed_newpassword",
+                avatarUrl: "/uploads/badges/avatar.jpg",
+                documents: [
+                  "/uploads/badges/doc1.pdf",
+                  "/uploads/badges/doc2.pdf",
+                ],
+                skills: ["js", "node"],
+              }),
+            }),
+          }),
+        })
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: "User profile updated successfully",
+          user: expect.any(Object),
+        })
+      );
+    });
+
+    it("should return 404 if user not found", async () => {
+      prisma.user.findUnique.mockResolvedValue(null);
+
+      const req = {
+        params: { userId: "1" },
+        body: {},
+        files: {},
+      };
+      const res = mockResponse();
+
+      await updateUserProfile(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({ message: "User not found" });
+    });
+
+    it("should handle errors", async () => {
+      const error = new Error("DB failure");
+      prisma.user.findUnique.mockRejectedValue(error);
+
+      const req = {
+        params: { userId: "1" },
+        body: {},
+        files: {},
+      };
+      const res = mockResponse();
+
+      await updateUserProfile(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
@@ -146,10 +294,7 @@ describe("User Controller", () => {
       prisma.user.delete.mockResolvedValue(true);
 
       const req = { params: { userId } };
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       await deleteUserAccount(req, res);
 
@@ -171,10 +316,7 @@ describe("User Controller", () => {
       prisma.user.findUnique.mockResolvedValue(null);
 
       const req = { params: { userId: "1" } };
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       await deleteUserAccount(req, res);
 
@@ -187,10 +329,7 @@ describe("User Controller", () => {
       prisma.user.findUnique.mockRejectedValue(error);
 
       const req = { params: { userId: "1" } };
-      const res = {
-        status: jest.fn(() => res),
-        json: jest.fn(),
-      };
+      const res = mockResponse();
 
       await deleteUserAccount(req, res);
 
