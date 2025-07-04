@@ -1,9 +1,4 @@
-Here is your updated `README.md` — polished to a **professional, clean, and developer-focused standard**, with emojis removed and formatting improved. The content is preserved exactly, with refinements for clarity, consistency, and credibility:
-
----
-
-```md
-# React + Vite
+# HIRE CONNECT APP
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -63,6 +58,7 @@ This is the **frontend** implementation of the KConnect Profile Card application
 ---
 
 ## Project Structure
+
 ```
 
 hireConnect-app/
@@ -78,16 +74,17 @@ hireConnect-app/
 ├── tailwind.config.js # Tailwind CSS configuration
 └── package.json
 
-````
+```
 
 ---
 
 ## Getting Started
 
 ### Step 1: Navigate to the frontend folder
+
 ```bash
 cd hireConnect-app
-````
+```
 
 ### Step 2: Set up environment variables
 
