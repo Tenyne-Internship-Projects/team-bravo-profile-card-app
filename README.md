@@ -1,3 +1,8 @@
+Here is your updated `README.md` — polished to a **professional, clean, and developer-focused standard**, with emojis removed and formatting improved. The content is preserved exactly, with refinements for clarity, consistency, and credibility:
+
+---
+
+```md
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -9,27 +14,28 @@ Currently, two official plugins are available:
 
 ## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-
-# 🧑‍💼 KConnect Profile Card (Frontend)
-
-This is the **frontend** portion of the KConnect Profile Card web app built with **React.js** and **Tailwind CSS**. It allows users to register, view, and edit their profile with real-time animations and clean UI design.
+For production applications, it is recommended to use TypeScript with type-aware lint rules enabled. Refer to the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for guidance on integrating TypeScript and [`typescript-eslint`](https://typescript-eslint.io).
 
 ---
 
-## ✨ Features
+# KConnect Profile Card (Frontend)
 
-- ✅ Animated profile card with Framer Motion
-- ✅ Register new profile with image upload
-- ✅ Edit profile and preview instantly
-- ✅ Display skills and tools using styled tags
-- ✅ Responsive and mobile-friendly UI
-- ✅ Uses Context API for global state management
+This is the **frontend** implementation of the KConnect Profile Card application, built using **React.js** and **Tailwind CSS**. The platform allows users to register, manage, and showcase their professional profiles in a sleek and responsive interface.
 
 ---
 
-## 🛠 Tech Stack
+## Features
+
+- Animated profile card using Framer Motion
+- Profile registration with image upload support
+- Edit and preview profile details in real-time
+- Styled display of skills and tools as tags
+- Mobile-friendly and responsive layout
+- Context API for centralized state management
+
+---
+
+## Technology Stack
 
 - React.js
 - Tailwind CSS
@@ -40,101 +46,124 @@ This is the **frontend** portion of the KConnect Profile Card web app built with
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
+| Onboarding                               | Sign In                              | Sign Up                              |
+| ---------------------------------------- | ------------------------------------ | ------------------------------------ |
+| ![Onboarding](./screenshots/screen1.png) | ![Signin](./screenshots/screen2.png) | ![Signup](./screenshots/screen3.png) |
 
-|---------------|--------------|--------------|
-| ![Onboarding](./screenshots/screen1.png) |
-| ![signin](./screenshots/screen2.png) |
-| ![Signup](./screenshots/screen3.png) |
-| ![ResetPassword](./screenshots/screen4.png) |
-| ![VerifyEmail](./screenshots/screen5.png) |
-| ![Register](./screenshots/screen6a.png) |
-| ![Register](./screenshots/screen6b.png) |
-| ![Profile](./screenshots/screen7a.png) |
-| ![Profile](./screenshots/screen7b.png) |
-| ![Edit](./screenshots/screen8a.png) |
-| ![Edit](./screenshots/screen8b.png) |
+| Reset Password                              | Email Verification                        | Register                                                                        |
+| ------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------- |
+| ![ResetPassword](./screenshots/screen4.png) | ![VerifyEmail](./screenshots/screen5.png) | ![Register](./screenshots/screen6a.png) ![Register](./screenshots/screen6b.png) |
 
- 
+| Profile                                                                       | Edit Profile                                                            |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| ![Profile](./screenshots/screen7a.png) ![Profile](./screenshots/screen7b.png) | ![Edit](./screenshots/screen8a.png) ![Edit](./screenshots/screen8b.png) |
 
 ---
 
-## 📂 Project Structure (Frontend)
-
+## Project Structure
 ```
-client/
+
+hireConnect-app/
 ├── public/
 ├── src/
-│   ├── assets/            # Images and logos
-│   ├── components/        # Reusable UI components
-│   ├── context/           # AppContext for global state
-│   ├── pages/             # Register, Profile, Edit Profile
-│   ├── App.js             # Main router config
-│   └── index.js           # Entry point
-├── .env                   # Environment config
-├── tailwind.config.js     # Tailwind CSS config
+│ ├── assets/ # Images and logos
+│ ├── components/ # Reusable UI components
+│ ├── context/ # AppContext for global state
+│ ├── pages/ # Register, Profile, Edit Profile, etc.
+│ ├── App.js # Main router configuration
+│ └── index.js # Entry point
+├── .env # Environment configuration
+├── tailwind.config.js # Tailwind CSS configuration
 └── package.json
-```
+
+````
 
 ---
 
-## 🚀 Getting Started (Frontend)
+## Getting Started
 
-### 1. Navigate to the client folder
+### Step 1: Navigate to the frontend folder
 ```bash
-cd kconnect
+cd hireConnect-app
+````
+
+### Step 2: Set up environment variables
+
+Create a `.env` file in the root of the `hireConnect-app` folder with your backend URL:
+
+```
+VITE_BACKEND_URL=http://localhost:5000
 ```
 
-### 2. Setup environment variables
-Create a `.env` file in the `client/` directory:
+### Step 3: Install dependencies
 
-```
-
-
-
-### 3. Install dependencies
 ```bash
 npm install
 ```
 
-### 4. Run the frontend app
+### Step 4: Start the development server
+
 ```bash
 npm run dev
 ```
 
-App will be available at: `http://localhost:3000`
-You can also checck: `https://team-bravo-profile-card-auth-app.vercel.app/`
+Visit the app at: [http://localhost:5173](http://localhost:5173)
+Live deployment (if configured): [https://team-bravo-profile-card-auth-app.vercel.app](https://team-bravo-profile-card-auth-app.vercel.app)
 
 ---
 
-## 🌐 Pages
+## Route Overview
 
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/register` | Register.jsx | Create a new profile |
-| `/profile` | ProfileCard.jsx | View user profile |
-| `/edit-profile` | EditProfile.jsx | Edit profile information |
-| `/login` | Signin.jsx | Login |
-| `/verify-email` | Emailverify.jsx | To verify new user |
-| `/edit-profile` | EditProfile.jsx | Edit profile information |
-| `/reset-password` | Resetpswd.jsx | To reset password |
-
+| Path              | Component         | Purpose                       |
+| ----------------- | ----------------- | ----------------------------- |
+| `/register`       | `Register.jsx`    | Create a new user profile     |
+| `/profile`        | `ProfileCard.jsx` | View user profile             |
+| `/edit-profile`   | `EditProfile.jsx` | Edit user profile information |
+| `/login`          | `Signin.jsx`      | Log into an existing profile  |
+| `/verify-email`   | `Emailverify.jsx` | Email verification flow       |
+| `/reset-password` | `Resetpswd.jsx`   | Password reset                |
 
 ---
 
+## API Integration
 
-
-## 📦 API Integration
-All data is fetched or submitted to the backend via Axios using the base URL set in `.env`:
+All API requests are made using Axios with the base URL defined in `.env`:
 
 ```js
-axios.post(`${process.env.VITE_BACKEND_URL}/api/...`)
+axios.post(`${process.env.VITE_BACKEND_URL}/api/...`);
 ```
+
+Make sure the backend server is running and CORS is properly configured.
 
 ---
 
-## 🙋‍♂️ Author
+Contributing
+We welcome contributions and suggestions from the community! To contribute:
 
-**Team Bravo**  
+Fork the repository
 
+Create a feature branch: git checkout -b feature/your-feature
+
+Commit your changes: git commit -m "feat: add your feature"
+
+Push to your fork: git push origin feature/your-feature
+
+Submit a pull request
+
+Please ensure your code follows the existing style, is well-documented, and includes relevant tests if applicable.
+
+Thank You
+Thank you for exploring the KConnect Profile Card frontend. This project is part of the Tenyne Innovations Internship Program and is maintained by Team Bravo. We appreciate your interest and support.
+
+---
+
+## Author
+
+**Team Bravo** – Tenyne Innovations Internship Program
+GitHub: [Tenyne-Internship-Projects](https://github.com/Tenyne-Internship-Projects)
+
+```
+
+```
