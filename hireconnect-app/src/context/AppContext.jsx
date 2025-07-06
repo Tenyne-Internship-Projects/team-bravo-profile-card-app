@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { logoutUser as logoutApi } from "../api/authApi";
 
 export const AppContext = createContext();
 
@@ -12,24 +13,11 @@ export const AppContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const getAuthState = async () => {
-    try {
-      axios.defaults.withCredentials = true;
-      const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`);
-      if (data.success) {
-        setIsLoggedIn(true);
-        await getUserData();
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const getUserData = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/user/data`);
+      const { data } = await axios.get(`${backendUrl}/api/user/data`, {
+        withCredentials: true,
+      });
       if (data.success) {
         setUserData(data.userData);
       } else {
@@ -40,11 +28,29 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const getAuthState = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        setIsLoggedIn(true);
+        await getUserData();
+      }
+    } catch (error) {
+      setIsLoggedIn(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logoutUser = async () => {
     try {
-      await axios.get(`${backendUrl}/api/auth/logout`);
+      await logoutApi();
       setIsLoggedIn(false);
       setUserData(null);
+      localStorage.removeItem("token");
       toast.success("Logged out successfully");
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);

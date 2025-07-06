@@ -1,97 +1,150 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { AppContext } from '../context/AppContext';
-import logo from '../assets/kconnect.png';
+import React, { useState, useContext, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AppContext } from "../context/AppContext";
+import AuthLayout from "../layout/AuthLayout";
+import { CheckCircle } from "lucide-react";
+import { confirmResetPassword } from "../api/authApi"; // ✅ Import API wrapper
+import "../styles/auth.css";
 
 const ConfirmReset = () => {
-  const { backendUrl } = useContext(AppContext);
   const { token } = useParams();
   const navigate = useNavigate();
 
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const passwordChecks = useMemo(
+    () => ({
+      length: password.length >= 8,
+      number: /\d/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    }),
+    [password]
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!password || !confirmPassword) {
-      toast.warning('Please fill in all fields');
+      toast.warning("Please fill in all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       return;
     }
 
     try {
       setLoading(true);
-
-      await axios.post(`${backendUrl}/api/auth/confirm-reset`, {
-        token,
-        password,
-      });
-
-      toast.success('Password reset successful!');
-      navigate('/login');
-    } catch (error) {
-      toast.error(error?.response?.data?.message || 'Reset failed. Try again.');
+      await confirmResetPassword({ token, password }); // ✅ Using wrapper
+      toast.success("Password reset successful! Redirecting...");
+      setTimeout(() => navigate("/signin"), 3000);
+    } catch (err) {
+      toast.error(err.message || "Reset failed. Try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-blue-200 min-h-screen px-4">
-      <div className="w-full p-2 sm:p-6 sm:px-24 absolute top-0">
-        <img src={logo} alt="KConnect Logo" className="w-1/5 sm:w-1/6 cursor-pointer" />
-      </div>
+    <AuthLayout showBack={false}>
+      <img
+        src="/assets/kconnect.png"
+        alt="KConnect Logo"
+        className="w-32 mb-6"
+        style={{ objectFit: "contain", cursor: "pointer" }}
+        onClick={() => navigate("/")}
+      />
 
-      <div className="flex flex-col items-center mt-14 w-full max-w-md bg-white shadow-md rounded-md p-6">
-        <h1 className="font-medium text-[#4A008F] text-2xl sm:text-3xl text-center mb-2">
-          Set New Password
-        </h1>
+      <div className="auth-wrapper">
+        <h1 className="auth-title text-center">Set New Password</h1>
 
-        <form onSubmit={handleSubmit} className="w-full mt-4 space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="auth-form bg-white shadow-lg rounded-lg p-6 w-full max-w-md"
+          style={{ marginTop: "1rem" }}
+        >
+          {/* New Password */}
           <div>
-            <label className="text-[#302B63] font-medium">New Password</label>
+            <label className="auth-label">New Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter new password"
-              className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
+              className="auth-input"
               required
             />
           </div>
 
+          {/* Confirm Password */}
           <div>
-            <label className="text-[#302B63] font-medium">Confirm Password</label>
+            <label className="auth-label">Confirm Password</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-enter new password"
-              className="border-2 border-[#302B63] rounded-md px-3 py-2 w-full outline-none"
+              className="auth-input"
               required
             />
+          </div>
+
+          {/* Password Checklist */}
+          <div className="space-y-1 text-sm mt-2">
+            <p
+              className={`flex items-center gap-2 ${
+                passwordChecks.length ? "text-green-600" : "text-gray-500"
+              }`}
+            >
+              <CheckCircle
+                className={`w-4 h-4 ${
+                  passwordChecks.length ? "text-green-600" : "text-gray-400"
+                }`}
+              />
+              At least 8 characters
+            </p>
+            <p
+              className={`flex items-center gap-2 ${
+                passwordChecks.number ? "text-green-600" : "text-gray-500"
+              }`}
+            >
+              <CheckCircle
+                className={`w-4 h-4 ${
+                  passwordChecks.number ? "text-green-600" : "text-gray-400"
+                }`}
+              />
+              Includes a number
+            </p>
+            <p
+              className={`flex items-center gap-2 ${
+                passwordChecks.special ? "text-green-600" : "text-gray-500"
+              }`}
+            >
+              <CheckCircle
+                className={`w-4 h-4 ${
+                  passwordChecks.special ? "text-green-600" : "text-gray-400"
+                }`}
+              />
+              Includes a special character
+            </p>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-[#302B63] text-white font-bold py-2 rounded-md text-lg transition-transform ${
-              loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+            className={`auth-button text-lg mt-4 ${
+              loading ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
             }`}
           >
-            {loading ? 'Resetting...' : 'Reset Password'}
+            {loading ? "Resetting..." : "Reset Password"}
           </button>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

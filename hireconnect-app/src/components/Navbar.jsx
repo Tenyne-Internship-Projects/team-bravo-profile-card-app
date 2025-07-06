@@ -1,23 +1,45 @@
-
-import logo from '../assets/kconnect.png';
-import { useNavigate } from 'react-router-dom';
-
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/Navbar.css";
 
 const Navbar = () => {
-  
   const navigate = useNavigate();
-  
 
   return (
-    <div className='w-full flex justify-between items-center p-4 sm:p-6 sm:px-24 absolute top-0'>
-      <img
-        onClick={() => navigate('/')}
-        src={logo}
-        alt="KConnect Logo"
-        className='w-1/4 sm:w-1/5 cursor-pointer'
-      />
+    <header className="navbar-header">
+      <nav className="navbar-nav">
+        {/* Logo on the left */}
+        <div className="navbar-logo">
+          <img
+            src="/assets/kconnect.png"
+            alt="HireConnect Logo"
+            onClick={() => navigate("/")}
+          />
+        </div>
 
-    </div>
+        {/* Center nav links */}
+        <div className="navbar-center-links">
+          <button onClick={() => navigate("/signup?role=ADMIN")}>Admin</button>
+          <button onClick={() => navigate("/signup?role=RECRUITER")}>
+            Recruiter
+          </button>
+          <button onClick={() => navigate("/jobs")}>Job Listings</button>
+        </div>
+
+        {/* Right nav links */}
+        <div className="navbar-right-links">
+          <button onClick={() => navigate("/signin")} className="navbar-signin">
+            Sign In
+          </button>
+          <button
+            onClick={() => navigate("/signup?role=FREELANCER")}
+            className="navbar-signup"
+          >
+            Sign Up
+          </button>
+        </div>
+      </nav>
+    </header>
   );
 };
 

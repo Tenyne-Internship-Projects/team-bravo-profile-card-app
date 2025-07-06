@@ -8,10 +8,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
-  const [filters, setFilters] = useState({ keyword: "", minBudget: 0, maxBudget: 10000 });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
   const [filters, setFilters] = useState({
     search: "",
     tags: [],
@@ -19,16 +15,13 @@ const Projects = () => {
     minBudget: null,
     maxBudget: null,
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchProjects = async () => {
-        const res = await getProjects({ ...filters, page: currentPage });
-    setProjects(res.projects);
-    setTotalPages(res.totalPages);
-  };
-  fetchProjects();
-}, [filters, currentPage]);
       try {
         setLoading(true);
         const { data } = await getProjects({ ...filters, page });
@@ -55,26 +48,22 @@ const Projects = () => {
         <FilterBar filters={filters} onChange={handleSearch} />
 
         {loading ? (
-          <div className="text-center text-purple-600 mt-10">Loading projects...</div>
+          <div className="text-center text-purple-600 mt-10">
+            Loading projects...
+          </div>
         ) : error ? (
           <div className="text-red-600 text-center mt-10">{error}</div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mt-6">
             <div>
               {projects.map((project) => (
-  <ProjectCard
-    key={project.id}
-    project={project}
-    onSelect={() => setSelectedProject(project)}
-    isFavorite={favorites.includes(project.id)}
-    onToggleFavorite={(id) =>
-      setFavorites((prev) =>
-        prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id]
-      )
-    }
-  />
-))}
-
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  isSelected={selectedProject?.id === project.id}
+                  onSelect={() => setSelectedProject(project)}
+                />
+              ))}
 
               <div className="flex justify-between items-center mt-6">
                 <button
@@ -85,7 +74,9 @@ const Projects = () => {
                   <ChevronLeft size={18} className="mr-2" /> Prev
                 </button>
 
-                <span className="text-gray-600 dark:text-gray-300">Page {page}</span>
+                <span className="text-gray-600 dark:text-gray-300">
+                  Page {page}
+                </span>
 
                 <button
                   onClick={() => setPage((prev) => prev + 1)}
@@ -98,7 +89,10 @@ const Projects = () => {
 
             <div>
               {selectedProject ? (
-                <JobDetailPanel project={selectedProject} />
+                <JobDetailPanel
+                  project={selectedProject}
+                  onClose={() => setSelectedProject(null)}
+                />
               ) : (
                 <div className="text-center text-gray-500 dark:text-gray-400 mt-10">
                   Select a project to view details

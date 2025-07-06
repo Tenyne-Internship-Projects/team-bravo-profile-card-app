@@ -1,5 +1,11 @@
-// src/api/favoriteApi.js
 import axios from "axios";
+import apiClient from "../api/apiClient";
+
+// Example: fetch user profile
+export const getProfile = async () => {
+  const res = await apiClient.get("/api/user/profile");
+  return res.data;
+};
 
 const API = "/api/favorites";
 

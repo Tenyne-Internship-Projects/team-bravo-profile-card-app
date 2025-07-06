@@ -1,144 +1,141 @@
-import React, { useState} from 'react';
-import { useNavigate } from 'react-router-dom';
-import {FaGithub } from 'react-icons/fa';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { ArrowLeft, User, Mail, Lock, CheckCircle } from 'lucide-react';
-import photo from '../assets/photo.png';              
+import { Mail, Lock } from "lucide-react";
+import AuthLayout from "../layout/AuthLayout";
+import { loginUser } from "../api/authApi";
+import { toast } from "react-toastify";
+import { AppContext } from "../context/AppContext";
+import "../styles/auth.css";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-
+  const { setUserData, setIsLoggedIn, getUserData } = useContext(AppContext);
+  const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/Profilecard');
-  };
 
-  const handleOAuth = (provider) => {
-    if (provider === 'google') {
-      window.location.href = 'https://accounts.google.com/';      
-    } else {
-      window.location.href = 'https://github.com/your‑username'; 
+    try {
+      const data = await loginUser(form);
+      localStorage.setItem("token", data.token);
+      toast.success("Login successful!");
+
+      setIsLoggedIn(true);
+      await getUserData?.(); // fetch profile to update context
+
+      navigate("/profile");
+    } catch (error) {
+      toast.error(error.message || "Login failed");
     }
   };
 
+  const handleOAuth = (provider) => {
+    const authWindow = window.open(
+      `${backendUrl}/api/auth/${provider}`,
+      "_blank",
+      "width=600,height=600"
+    );
+
+    const checkPopup = setInterval(() => {
+      try {
+        if (authWindow.closed) {
+          clearInterval(checkPopup);
+          // After OAuth window closes, you can call is-auth
+          // to check if login succeeded
+          getUserData(); // Assuming it sets isLoggedIn
+          toast.success("Logged in via OAuth");
+          navigate("/profile");
+        }
+      } catch (err) {
+        // Ignore cross-origin error
+      }
+    }, 1000);
+  };
 
   return (
-    <div className="relative min-h-screen flex items-start justify-between bg-white">
-      {/* back arrow */}
-      <button
-        onClick={() => navigate('/SignUp')}
-        className="absolute left-4 top-4 flex items-center text-gray-600 hover:text-gray-800"
-      >
-        <ArrowLeft className="w-5 h-5" />
-      </button>
+    <AuthLayout backTo="/signup">
+      <h1 className="auth-title">Sign in to your account</h1>
 
-      
-      <div className="flex w-full max-w-8xl bg-[#f9f7fb] rounded-[24px] overflow-hidden shadow-lg">
-        {/* left – image */}
-        <img
-          src={photo}
-          alt="freelancer"
-          className="hidden md:block object-cover max-w-[620px] h-[680px] ml-12 "
-          style={{ borderRadius: '24px 0 0 24px' }}
-        />
+      {/* OAuth Buttons */}
+      <div className="w-full space-y-3">
+        <button
+          onClick={() => handleOAuth("google")}
+          className="auth-button-alt"
+        >
+          <FcGoogle className="w-5 h-5 text-[#4285F4]" />
+          Continue with Google
+        </button>
+        <button
+          onClick={() => handleOAuth("github")}
+          className="auth-button-alt"
+        >
+          <FaGithub className="w-5 h-5 text-gray-800" />
+          Continue with GitHub
+        </button>
+      </div>
 
-        {/* right – sign‑up form */}
-        <div className="flex-4 flex flex-col justify-center items-center p-8 md:p-12 space-y-6">
-          <h1 className="text-3xl font-semibold">Create your account</h1>
+      {/* Divider */}
+      <div className="auth-divider">
+        <span />
+        <p>Or continue with</p>
+        <span />
+      </div>
 
-          {/* Auth buttons */}
-          <div className="w-full space-y-3">
-            <button
-              onClick={() => handleOAuth('google')}
-              className="w-full flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-md py-2 hover:bg-gray-100"
-            >
-              <FcGoogle className="w-5 h-5 text-[#4285F4]" />
-              Continue with Google
-            </button>
-            <button
-              onClick={() => handleOAuth('github')}
-              className="w-full flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-md py-2 hover:bg-gray-100"
-            >
-              <FaGithub className="w-5 h-5 text-gray-800" />
-              Continue with GitHub
-            </button>
-          </div>
-
-          {/* divider */}
-          <div className="flex items-center gap-2 w-full">
-            <span className="flex-1 h-px bg-gray-300" />
-            <span className="text-sm text-gray-500 whitespace-nowrap">Or continue with</span>
-            <span className="flex-1 h-px bg-gray-300" />
-          </div>
-         
-          <form onSubmit={handleSubmit} className="w-full space-y-4">
-                        {/* email */}
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="Email"
-                value={form.email}
-                onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 py-2 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-[#4d0892]/50"
-              />
-            </div>
-
-            {/* password */}
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="password"
-                name="password"
-                required
-                placeholder="Enter your password"
-                value={form.password}
-                onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 py-2 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-[#4d0892]/50"
-              />
-            </div>
-
-         
-            {/* submit */}
-            <button
-              type="submit"
-              className="w-full bg-[#4d0892] hover:bg-[#3d0672] text-white rounded-md py-3 font-medium"
-            >
-              Sign in
-            </button>
-             {/* ----------Blur section--------- */}
-        <div className="relative w-full lg:w-[564px] lg:shrink-2">
-          <div
-            className="
-              absolute left-1/2 bottom-[-1rem] hidden h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2
-              rounded-full bg-gradient-to-br from-[#17022c]/50 to-[#4d0892]/10
-              opacity-30 blur-3xl shadow-2xl
-              lg:block
-            "
+      {/* Login Form */}
+      <form onSubmit={handleSubmit} className="auth-form">
+        <div className="relative">
+          <Mail className="auth-icon" />
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="auth-input pl-10"
           />
         </div>
-          </form>
 
-          {/* sign‑in */}
-          <p className="text-sm text-center">
-            Don't have an account?{' '}
-            <button
-              onClick={() => navigate('/signup')}
-              className="text-[#4d0892] hover:underline font-medium"
-            >
-              Sign up
-            </button>
-          </p>
+        <div className="relative">
+          <Lock className="auth-icon" />
+          <input
+            type="password"
+            name="password"
+            required
+            placeholder="Enter your password"
+            value={form.password}
+            onChange={handleChange}
+            className="auth-input pl-10"
+          />
         </div>
-      </div>
-    </div>
+
+        {/* Forgot Password */}
+        <div className="w-full text-right mb-2">
+          <button
+            type="button"
+            onClick={() => navigate("/reset-password")}
+            className="text-sm text-[#4d0892] hover:underline cursor-pointer bg-transparent"
+          >
+            Forgot password?
+          </button>
+        </div>
+
+        <button type="submit" className="auth-button">
+          Sign in
+        </button>
+      </form>
+
+      {/* Signup Redirect */}
+      <p className="auth-footer">
+        Don’t have an account?{" "}
+        <span onClick={() => navigate("/signup")}>Sign up</span>
+      </p>
+    </AuthLayout>
   );
 };
 

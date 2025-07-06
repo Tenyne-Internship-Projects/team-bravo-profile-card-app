@@ -1,16 +1,14 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
-import Onboarding from '../components/Onboarding';
-
+import React from "react";
+import Onboarding from "./Onboarding";
 
 const Home = () => {
-  
   return (
-    <div className='flex flex-col items-center justify-center bg-blue-200 min-h-screen'>
-        <Navbar />
+    <div className="min-h-screen w-full bg-[#f9f7fb] flex flex-col items-center">
+      <main className="pt-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex-1 flex flex-col justify-center">
         <Onboarding />
+      </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

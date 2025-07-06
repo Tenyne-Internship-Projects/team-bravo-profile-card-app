@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
-// import logo from '../assets/kconnect.png';
-// import fallbackDp from '../assets/ay.png';
 import axios from "axios";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import { logoutUser } from "../api/authApi";
 
 const ProfileCard = () => {
   const { userData, setUserData, getUserData, setIsLoggedIn, backendUrl } =
@@ -45,15 +44,14 @@ const ProfileCard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${backendUrl}/api/auth/logout`, {
-        withCredentials: true,
-      });
+      await logoutUser(); // POST with cookies
+      localStorage.removeItem("token");
       setIsLoggedIn(false);
       setUserData(null);
       toast.success("Logged out successfully");
-      navigate("/login");
+      navigate("/signin");
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Logout failed");
+      toast.error(error?.message || "Logout failed");
     }
   };
 
@@ -132,7 +130,7 @@ const ProfileCard = () => {
           <motion.div variants={itemVariants}>
             <p className="text-gray-700 mt-2">{profile.about}</p>
             <p className="text-gray-600 text-[14px] mt-1">
-              📍 {profile.state}, {profile.country}
+              {profile.state}, {profile.country}
             </p>
           </motion.div>
 
@@ -143,13 +141,13 @@ const ProfileCard = () => {
             </h3>
             <div className="flex flex-col gap-3">
               <p className="bg-[#302B63]/10 text-[#302B63] px-4 py-2 rounded-md text-sm">
-                📧 <a href={`mailto:${profile.email}`}>{profile.email}</a>
+                <a href={`mailto:${profile.email}`}>{profile.email}</a>
               </p>
               <p className="bg-[#302B63]/10 text-[#302B63] px-4 py-2 rounded-md text-sm">
-                📞 <a href={`tel:${profile.contact}`}>{profile.contact}</a>
+                <a href={`tel:${profile.contact}`}>{profile.contact}</a>
               </p>
               <p className="bg-[#302B63]/10 text-[#302B63] px-4 py-2 rounded-md text-sm">
-                🌐{" "}
+                {" "}
                 <a
                   href={profile.portfolio}
                   target="_blank"
@@ -159,7 +157,7 @@ const ProfileCard = () => {
                 </a>
               </p>
               <p className="bg-[#302B63]/10 text-[#302B63] px-4 py-2 rounded-md text-sm">
-                🧑‍💻{" "}
+                {" "}
                 <a
                   href={profile.github}
                   target="_blank"

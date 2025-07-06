@@ -1,7 +1,13 @@
-// src/api/projectApi.js
 import axios from "axios";
+import apiClient from "../api/apiClient";
 
-const BASE_URL = "/api/projects";
+// Example: fetch user profile
+export const getProfile = async () => {
+  const res = await apiClient.get("/api/user/profile");
+  return res.data;
+};
+
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 /**
  * Get all projects with optional filters and pagination

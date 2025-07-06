@@ -1,0 +1,103 @@
+/* src/styles/auth-layout.css */
+.auth-layout-bg {
+  min-height: 100vh;
+  width: 100%;
+  background: url("/assets/pattern.jpg") center center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem;
+}
+
+.auth-layout-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8); /* white fade for readability */
+  backdrop-filter: blur(4px); /* optional for frosted effect */
+  z-index: 0;
+}
+
+.auth-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f9f7fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-main {
+  width: 100%;
+  max-width: 80rem;
+  background-color: rgb(17, 18, 29);
+  padding: 2rem 1rem; /* NEW: padding top and bottom */
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+
+.auth-back-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  color: #4b5563; /* text-gray-600 */
+  cursor: pointer;
+}
+
+.auth-back-btn:hover {
+  color: #1f2937; /* text-gray-800 */
+}
+
+.auth-card {
+  width: 100%;
+  display: flex;
+  background-color: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.auth-bg {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .auth-bg {
+    display: block;
+    width: 620px;
+    height: 680px;
+    margin-left: 3rem;
+    background-image: url("/assets/Freelancer.jpg");
+    background-size: cover;
+    background-position: center;
+    border-radius: 24px 0 0 24px;
+  }
+}
+
+.auth-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  gap: 1.5rem;
+
+  background: rgba(255, 255, 255, 0.85); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Optional: Glassmorphism effect */
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .auth-content {
+    padding: 3rem;
+  }
+}
