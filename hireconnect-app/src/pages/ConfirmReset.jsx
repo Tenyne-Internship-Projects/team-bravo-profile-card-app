@@ -4,8 +4,10 @@ import { toast } from "react-toastify";
 import { AppContext } from "../context/AppContext";
 import AuthLayout from "../layout/AuthLayout";
 import { CheckCircle } from "lucide-react";
-import { confirmResetPassword } from "../api/authApi"; // ✅ Import API wrapper
+import { confirmResetPassword } from "../api/authApi";
+
 import "../styles/auth.css";
+import "../styles/ConfirmReset.css"; // ✅ External styles here
 
 const ConfirmReset = () => {
   const { token } = useParams();
@@ -39,7 +41,7 @@ const ConfirmReset = () => {
 
     try {
       setLoading(true);
-      await confirmResetPassword({ token, password }); // ✅ Using wrapper
+      await confirmResetPassword({ token, password });
       toast.success("Password reset successful! Redirecting...");
       setTimeout(() => navigate("/signin"), 3000);
     } catch (err) {
@@ -54,20 +56,14 @@ const ConfirmReset = () => {
       <img
         src="/assets/kconnect.png"
         alt="KConnect Logo"
-        className="w-32 mb-6"
-        style={{ objectFit: "contain", cursor: "pointer" }}
+        className="logo-img"
         onClick={() => navigate("/")}
       />
 
       <div className="auth-wrapper">
         <h1 className="auth-title text-center">Set New Password</h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="auth-form bg-white shadow-lg rounded-lg p-6 w-full max-w-md"
-          style={{ marginTop: "1rem" }}
-        >
-          {/* New Password */}
+        <form onSubmit={handleSubmit} className="auth-form">
           <div>
             <label className="auth-label">New Password</label>
             <input
@@ -80,7 +76,6 @@ const ConfirmReset = () => {
             />
           </div>
 
-          {/* Confirm Password */}
           <div>
             <label className="auth-label">Confirm Password</label>
             <input
@@ -93,10 +88,9 @@ const ConfirmReset = () => {
             />
           </div>
 
-          {/* Password Checklist */}
-          <div className="space-y-1 text-sm mt-2">
+          <div className="password-checklist">
             <p
-              className={`flex items-center gap-2 ${
+              className={`password-check ${
                 passwordChecks.length ? "text-green-600" : "text-gray-500"
               }`}
             >
@@ -108,7 +102,7 @@ const ConfirmReset = () => {
               At least 8 characters
             </p>
             <p
-              className={`flex items-center gap-2 ${
+              className={`password-check ${
                 passwordChecks.number ? "text-green-600" : "text-gray-500"
               }`}
             >
@@ -120,7 +114,7 @@ const ConfirmReset = () => {
               Includes a number
             </p>
             <p
-              className={`flex items-center gap-2 ${
+              className={`password-check ${
                 passwordChecks.special ? "text-green-600" : "text-gray-500"
               }`}
             >
@@ -133,13 +127,7 @@ const ConfirmReset = () => {
             </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`auth-button text-lg mt-4 ${
-              loading ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
-            }`}
-          >
+          <button type="submit" disabled={loading} className="auth-button">
             {loading ? "Resetting..." : "Reset Password"}
           </button>
         </form>

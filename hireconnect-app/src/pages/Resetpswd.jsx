@@ -21,7 +21,7 @@ const Resetpswd = () => {
     }
 
     try {
-      await sendResetOtp(email); // ✅ Using wrapper
+      await sendResetOtp(email);
       setState("sent");
       toast.success("Reset OTP sent! Check your inbox.");
     } catch (error) {

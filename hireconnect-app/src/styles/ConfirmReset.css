@@ -1,0 +1,47 @@
+/* src/styles/ConfirmReset.css */
+
+.logo-img {
+  width: 8rem; /* w-32 */
+  margin-bottom: 1.5rem;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.auth-form {
+  background-color: white;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 28rem;
+  margin-top: 1rem;
+}
+
+.password-checklist {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.password-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-button {
+  font-size: 1.125rem;
+  margin-top: 1rem;
+  transition: transform 0.2s;
+}
+
+.auth-button:hover {
+  transform: scale(1.05);
+}
+
+.auth-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

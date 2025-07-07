@@ -1,36 +1,30 @@
+// src/components/Sidebar.jsx
 import { useNavigate } from "react-router-dom";
+import "@/styles/Sidebar.css";
 
 const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 shadow-lg p-4 h-full hidden md:block">
-      <h2 className="text-xl font-semibold text-purple-700 mb-6">
-        HireConnect
-      </h2>
+    <aside className="sidebar">
+      <div className="sidebar-title">Dashboard</div>
 
-      <nav className="space-y-4">
-        <button
-          onClick={() => navigate("/")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
-        >
+      <nav className="sidebar-nav">
+        <button onClick={() => navigate("/")} className="sidebar-button">
           Home
         </button>
         <button
-          onClick={() => navigate("/jobs")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
+          onClick={() => navigate("/projects")}
+          className="sidebar-button"
         >
-          Jobs
+          Favourites
         </button>
-        <button
-          onClick={() => navigate("/profile")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
-        >
+        <button onClick={() => navigate("/profile")} className="sidebar-button">
           Profile
         </button>
         <button
           onClick={() => navigate("/edit-profile")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
+          className="sidebar-button"
         >
           Edit Profile
         </button>

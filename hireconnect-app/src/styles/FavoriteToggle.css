@@ -1,0 +1,23 @@
+/* src/styles/FavoriteToggle.css */
+
+.favorite-toggle-button {
+  color: #9333ea; /* text-purple-600 */
+  transition: color 0.2s ease-in-out;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.favorite-toggle-button:hover {
+  color: #6b21a8; /* text-purple-800 */
+}
+
+.favorite-toggle-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.favorite-icon {
+  width: 1.5rem; /* w-6 */
+  height: 1.5rem; /* h-6 */
+}

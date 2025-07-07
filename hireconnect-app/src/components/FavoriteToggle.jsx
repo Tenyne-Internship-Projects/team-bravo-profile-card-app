@@ -3,6 +3,7 @@ import { useState } from "react";
 import { favoriteProject, unfavoriteProject } from "@/api/favoriteApi";
 import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
 import { HeartIcon as OutlineHeart } from "@heroicons/react/24/outline";
+import "../styles/FavoriteToggle.css"; // ✅ Import external CSS
 
 const FavoriteToggle = ({ projectId, isInitiallyFavorited }) => {
   const [favorited, setFavorited] = useState(isInitiallyFavorited);
@@ -30,10 +31,10 @@ const FavoriteToggle = ({ projectId, isInitiallyFavorited }) => {
     <button
       onClick={handleToggle}
       disabled={loading}
-      className="text-purple-600 hover:text-purple-800 transition"
+      className="favorite-toggle-button"
       title={favorited ? "Remove from favorites" : "Save to favorites"}
     >
-      <HeartIcon className="w-6 h-6" />
+      <HeartIcon className="favorite-icon" />
     </button>
   );
 };

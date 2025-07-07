@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../layout/AuthLayout";
 import { verifyOtp, resendOtp } from "../api/authApi";
-import "../styles/auth.css";
+
+import "../styles/EmailVerify.css";
 
 const Emailverify = () => {
   const navigate = useNavigate();
@@ -13,29 +14,19 @@ const Emailverify = () => {
   const inputRefs = useRef([]);
   const [resendLoading, setResendLoading] = useState(false);
   const [timer, setTimer] = useState(60);
-
   const [verificationEmail, setVerificationEmail] = useState("");
   const [resendEmail, setResendEmail] = useState("");
 
-  // Handle countdown
   useEffect(() => {
     const savedExpireTime = localStorage.getItem("otp_expire_time");
-    if (!savedExpireTime) {
-      setTimer(0);
-      return;
-    }
+    if (!savedExpireTime) return setTimer(0);
 
     const remaining = Math.max(
       Math.floor((Number(savedExpireTime) - Date.now()) / 1000),
       0
     );
-    if (remaining <= 0) {
-      setTimer(0);
-      localStorage.removeItem("otp_expire_time");
-      return;
-    }
-
     setTimer(remaining);
+
     const interval = setInterval(() => {
       const timeLeft = Math.floor(
         (Number(savedExpireTime) - Date.now()) / 1000
@@ -52,12 +43,10 @@ const Emailverify = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Redirect if already verified
   useEffect(() => {
     if (isLoggedIn && userData?.isAccountVerified) navigate("/");
   }, [isLoggedIn, userData, navigate]);
 
-  // Get email from context or localStorage
   useEffect(() => {
     const emailFromStorage = localStorage.getItem("user_email");
     if (userData?.email) {
@@ -69,7 +58,6 @@ const Emailverify = () => {
     }
   }, [userData]);
 
-  // Autofocus first OTP box
   useEffect(() => {
     inputRefs.current[0]?.focus();
   }, []);
@@ -83,10 +71,7 @@ const Emailverify = () => {
 
   const handleInput = (e, i) => {
     const val = e.target.value;
-    if (!/^[0-9]$/.test(val)) {
-      e.target.value = "";
-      return;
-    }
+    if (!/^[0-9]$/.test(val)) return (e.target.value = "");
     if (i < inputRefs.current.length - 1) inputRefs.current[i + 1].focus();
   };
 
@@ -106,10 +91,7 @@ const Emailverify = () => {
     e.preventDefault();
     const otp = inputRefs.current.map((el) => el.value).join("");
 
-    if (!otp || otp.length < 6) {
-      toast.warning("Please enter all 6 digits.");
-      return;
-    }
+    if (otp.length < 6) return toast.warning("Please enter all 6 digits.");
 
     try {
       const data = await verifyOtp({
@@ -119,10 +101,6 @@ const Emailverify = () => {
 
       toast.success(data.message);
       clearInputs();
-
-      // Optional: clear saved email
-      // localStorage.removeItem("user_email");
-
       await getUserData?.();
       navigate("/register");
     } catch (err) {
@@ -150,20 +128,15 @@ const Emailverify = () => {
   };
 
   const handleResendOTP = async () => {
-    if (!resendEmail) {
-      toast.error("Please enter your email first.");
-      return;
-    }
+    if (!resendEmail) return toast.error("Please enter your email first.");
 
     try {
       setResendLoading(true);
       const data = await resendOtp(resendEmail);
-
       if (data.message?.toLowerCase().includes("already verified")) {
         toast.info("Your account is already verified. You can log in.");
         return;
       }
-
       toast.success(data.message);
       startTimer(60);
     } catch (err) {
@@ -175,28 +148,22 @@ const Emailverify = () => {
 
   return (
     <AuthLayout>
-      <div className="auth-wrapper">
-        <h1 className="auth-title">Please verify your email address</h1>
-        <p className="auth-description">
+      <div className="emailverify-wrapper">
+        <h1 className="emailverify-title">Please verify your email address</h1>
+        <p className="emailverify-description">
           We've sent a verification code to{" "}
-          <span className="font-semibold text-[#302B63]">
+          <span>
             {verificationEmail ? maskEmail(verificationEmail) : "your email"}
           </span>
           . Please enter it below to continue.
         </p>
 
-        <form onSubmit={onSubmitHandler} className="w-full max-w-md space-y-4">
-          <div className="space-y-2 w-full">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Enter your email for verification
-            </label>
+        <form onSubmit={onSubmitHandler} className="emailverify-form">
+          <div className="space-y-2">
+            <label htmlFor="email">Enter your email for verification</label>
             <input
               id="email"
               type="email"
-              placeholder="Please enter your email"
               className="email-input"
               value={verificationEmail}
               onChange={(e) => setVerificationEmail(e.target.value)}
@@ -204,10 +171,7 @@ const Emailverify = () => {
             />
           </div>
 
-          <div
-            className="flex justify-between gap-2 sm:gap-3"
-            onPaste={handlePaste}
-          >
+          <div className="otp-box-container" onPaste={handlePaste}>
             {Array.from({ length: 6 }).map((_, i) => (
               <input
                 key={i}
@@ -238,14 +202,13 @@ const Emailverify = () => {
           />
         </div>
 
-        <div className="mt-2 text-center">
-          <p className="text-sm text-[#747196]">
+        <div className="emailverify-footer">
+          <p>
             Didn’t receive a code?{" "}
             <button
               type="button"
               onClick={handleResendOTP}
               disabled={timer > 0 || resendLoading}
-              className="text-[#4d0892] font-medium underline disabled:opacity-50"
             >
               {resendLoading
                 ? "Resending…"

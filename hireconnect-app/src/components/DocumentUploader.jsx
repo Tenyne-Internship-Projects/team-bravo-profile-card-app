@@ -1,6 +1,8 @@
+// src/components/DocumentUploader.jsx
 import React, { useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import "../styles/DocumentUploader.css";
 
 const DocumentUploader = ({ backendUrl, getUserData }) => {
   const [uploading, setUploading] = useState(false);
@@ -32,17 +34,14 @@ const DocumentUploader = ({ backendUrl, getUserData }) => {
   };
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-[#302B63]">
-        Upload Documents
-      </label>
+    <div className="document-uploader">
+      <label>Upload Documents</label>
       <input
         ref={inputRef}
         type="file"
         multiple
         accept=".pdf,.doc,.docx,.png,.jpg"
         onChange={handleFileUpload}
-        className="block w-full border rounded p-2"
         disabled={uploading}
       />
     </div>

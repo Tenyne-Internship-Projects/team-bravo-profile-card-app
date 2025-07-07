@@ -6,13 +6,14 @@
 /* HERO SECTION */
 .hero-section {
   position: relative;
-  /* Remove background image from here */
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 20px;
+  padding: 0;
+  margin: 0;
   overflow: hidden;
 }
 
@@ -20,10 +21,7 @@
 .hero-section::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: url("/assets/bg-img.jpg") no-repeat center center/cover;
   z-index: 0;
 
@@ -35,10 +33,7 @@
 .hero-section::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.4); /* dark overlay */
   z-index: 1;
 }

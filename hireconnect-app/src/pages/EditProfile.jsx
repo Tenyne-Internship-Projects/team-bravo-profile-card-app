@@ -1,118 +1,229 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { verifyOtp, resendOtp } from "../api/authApi";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import axios from "axios";
+import AuthLayout from "../layout/AuthLayout";
+import "../styles/EditProfile.css";
 
-const EmailVerify = () => {
+const EditProfile = () => {
+  const { userData, getUserData, backendUrl } = useContext(AppContext);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // Auto-fill email if passed from signup
-  const prefilledEmail = location?.state?.email || "";
-  const [email, setEmail] = useState(prefilledEmail);
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    contact: "",
+    country: "",
+    state: "",
+    about: "",
+    skills: "",
+    tools: "",
+    github: "",
+    portfolio: "",
+  });
 
-  // Handle OTP input
-  const handleChange = (index, value) => {
-    if (!/^\d?$/.test(value)) return;
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
-    // Auto-focus next field
-    if (value && index < 5) {
-      const nextInput = document.getElementById(`otp-${index + 1}`);
-      nextInput?.focus();
+  useEffect(() => {
+    if (userData) {
+      setForm({
+        username: userData.username || "",
+        email: userData.email || "",
+        contact: userData.contact || "",
+        country: userData.country || "",
+        state: userData.state || "",
+        about: userData.about || "",
+        skills: userData.skills?.join(", ") || "",
+        tools: userData.tools?.join(", ") || "",
+        github: userData.github || "",
+        portfolio: userData.portfolio || "",
+      });
+      setPreview(userData.image || "");
+    } else {
+      getUserData();
+    }
+  }, [userData]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    } else {
+      toast.warning("Please upload a valid image");
     }
   };
 
-  // Submit OTP
-  const handleVerify = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const code = otp.join("");
-    if (code.length !== 6) return toast.error("Enter all 6 digits");
-
-    try {
-      setLoading(true);
-      await verifyOtp(code);
-      toast.success("Email verified successfully");
-      navigate("/signin");
-    } catch (err) {
-      toast.error(err.message || "OTP verification failed");
-    } finally {
-      setLoading(false);
+    const requiredFields = ["username", "email", "country", "state", "about"];
+    for (const field of requiredFields) {
+      if (!form[field]) {
+        toast.error(`Please fill in the ${field} field`);
+        return;
+      }
     }
-  };
 
-  // Resend OTP
-  const handleResend = async () => {
-    if (!email) return toast.error("Please enter your email first");
     try {
-      setLoading(true);
-      await resendOtp(email);
-      toast.success("OTP resent successfully");
+      const formData = new FormData();
+      for (const key in form) {
+        formData.append(key, form[key]);
+      }
+      if (image) formData.append("image", image);
+
+      const { data } = await axios.put(
+        `${backendUrl}/api/user/edit-profile`,
+        formData,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (data.success) {
+        toast.success("Profile updated successfully");
+        await getUserData();
+        navigate("/profile");
+      } else {
+        toast.error(data.message);
+      }
     } catch (err) {
-      toast.error(err.message || "Failed to resend OTP");
-    } finally {
-      setLoading(false);
+      toast.error(err?.response?.data?.message || "Update failed");
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f9f7fb] px-4">
-      <div className="w-full max-w-md bg-white shadow-md rounded-md p-6 space-y-4 text-center">
-        <img src="/assets/kconnect.png" alt="Logo" className="w-20 mx-auto" />
-        <h2 className="text-xl font-semibold text-[#4d0892]">Verify Email</h2>
-        <p className="text-sm text-gray-600">
-          Enter the 6-digit OTP sent to your email. It expires in{" "}
-          <strong>20 minutes</strong>.
-        </p>
+    <AuthLayout>
+      <div className="edit-profile-wrapper">
+        <h2 className="edit-profile-title">Edit Profile</h2>
 
-        <form onSubmit={handleVerify} className="space-y-4">
-          <div className="flex justify-center gap-1 sm:gap-2">
-            {otp.map((digit, index) => (
-              <input
-                key={index}
-                id={`otp-${index}`}
-                type="text"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleChange(index, e.target.value)}
-                className="w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base text-center border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-[#4d0892]"
+        <form onSubmit={handleSubmit} className="edit-profile-form">
+          <div className="edit-profile-avatar">
+            <label htmlFor="image">
+              <img
+                src={preview || "https://via.placeholder.com/150"}
+                alt="Profile"
               />
-            ))}
+            </label>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+            <p className="edit-profile-note">Click image to change</p>
           </div>
 
-          <button
-            type="submit"
-            className="bg-[#4d0892] text-white py-2 px-4 rounded w-full font-semibold hover:bg-[#3c0577] transition"
-            disabled={loading}
-          >
-            {loading ? "Verifying..." : "Verify Email"}
-          </button>
-        </form>
+          <input
+            type="text"
+            name="username"
+            value={form.username}
+            onChange={handleChange}
+            placeholder="Username"
+            className="edit-profile-input"
+            required
+          />
 
-        <div className="mt-4 space-y-2 text-left">
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email to resend OTP"
-            className="w-full px-3 py-2 border rounded border-gray-300"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="edit-profile-input"
+            required
           />
-          <button
-            onClick={handleResend}
-            className="text-[#4d0892] font-medium hover:underline"
-            disabled={loading}
-          >
-            Resend OTP
+
+          <input
+            type="text"
+            name="contact"
+            value={form.contact}
+            onChange={handleChange}
+            placeholder="Phone/Contact"
+            className="edit-profile-input"
+          />
+
+          <div className="edit-profile-flex-row">
+            <input
+              type="text"
+              name="country"
+              value={form.country}
+              onChange={handleChange}
+              placeholder="Country"
+              className="edit-profile-input"
+              required
+            />
+            <input
+              type="text"
+              name="state"
+              value={form.state}
+              onChange={handleChange}
+              placeholder="State"
+              className="edit-profile-input"
+              required
+            />
+          </div>
+
+          <textarea
+            name="about"
+            value={form.about}
+            onChange={handleChange}
+            placeholder="About Me"
+            className="edit-profile-textarea"
+            required
+          />
+
+          <input
+            type="text"
+            name="skills"
+            value={form.skills}
+            onChange={handleChange}
+            placeholder="Skills (comma-separated)"
+            className="edit-profile-input"
+          />
+
+          <input
+            type="text"
+            name="tools"
+            value={form.tools}
+            onChange={handleChange}
+            placeholder="Tools (comma-separated)"
+            className="edit-profile-input"
+          />
+
+          <input
+            type="text"
+            name="github"
+            value={form.github}
+            onChange={handleChange}
+            placeholder="GitHub URL"
+            className="edit-profile-input"
+          />
+
+          <input
+            type="text"
+            name="portfolio"
+            value={form.portfolio}
+            onChange={handleChange}
+            placeholder="Portfolio URL"
+            className="edit-profile-input"
+          />
+
+          <button type="submit" className="edit-profile-submit">
+            Save Changes
           </button>
-        </div>
+        </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 
-export default EmailVerify;
+export default EditProfile;

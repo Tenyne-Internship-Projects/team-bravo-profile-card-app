@@ -2,6 +2,7 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import "../styles/ProtectedRoute.css";
 
 const ProtectedRoute = ({ allowedRoles }) => {
   const { isLoggedIn, userData, loading } = useContext(AppContext);
@@ -9,8 +10,8 @@ const ProtectedRoute = ({ allowedRoles }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-[#302B63] text-lg font-medium">Checking access...</p>
+      <div className="protected-loading">
+        <p className="protected-loading-text">Checking access...</p>
       </div>
     );
   }
@@ -21,8 +22,8 @@ const ProtectedRoute = ({ allowedRoles }) => {
 
   if (allowedRoles && !allowedRoles.includes(userData?.role)) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-600 text-lg font-semibold">Unauthorized</p>
+      <div className="protected-unauthorized">
+        <p className="protected-unauthorized-text">Unauthorized</p>
       </div>
     );
   }

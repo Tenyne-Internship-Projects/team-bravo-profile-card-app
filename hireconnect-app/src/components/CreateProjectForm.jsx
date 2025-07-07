@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import "../styles/CreateProjectForm.css";
 
 const CreateProjectForm = () => {
   const [form, setForm] = useState({
@@ -30,7 +31,7 @@ const CreateProjectForm = () => {
     attachments.forEach((file) => data.append("attachments", file));
 
     try {
-      const res = await axios.post("/api/projects", data);
+      await axios.post("/api/projects", data);
       toast.success("Project posted successfully!");
       setForm({
         title: "",
@@ -51,16 +52,16 @@ const CreateProjectForm = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow">
-      <h2 className="text-xl font-bold mb-4 text-purple-800">Post a Job</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="create-project-wrapper">
+      <h2 className="create-project-title">Post a Job</h2>
+      <form onSubmit={handleSubmit} className="create-project-form">
         <input
           name="title"
           type="text"
           placeholder="Job Title"
           value={form.title}
           onChange={handleChange}
-          className="w-full border px-4 py-2 rounded"
+          className="input"
           required
         />
         <textarea
@@ -68,7 +69,7 @@ const CreateProjectForm = () => {
           placeholder="Description"
           value={form.description}
           onChange={handleChange}
-          className="w-full border px-4 py-2 rounded h-28"
+          className="textarea"
           required
         />
         <textarea
@@ -76,14 +77,14 @@ const CreateProjectForm = () => {
           placeholder="Responsibilities"
           value={form.responsibilities}
           onChange={handleChange}
-          className="w-full border px-4 py-2 rounded h-20"
+          className="textarea"
         />
         <textarea
           name="requirements"
           placeholder="Requirements"
           value={form.requirements}
           onChange={handleChange}
-          className="w-full border px-4 py-2 rounded h-20"
+          className="textarea"
         />
         <input
           name="skills"
@@ -91,16 +92,16 @@ const CreateProjectForm = () => {
           placeholder="Skills (comma-separated)"
           value={form.skills}
           onChange={handleChange}
-          className="w-full border px-4 py-2 rounded"
+          className="input"
         />
-        <div className="flex gap-4">
+        <div className="budget-fields">
           <input
             name="min_budget"
             type="number"
             placeholder="Min Budget"
             value={form.min_budget}
             onChange={handleChange}
-            className="w-full border px-4 py-2 rounded"
+            className="input"
           />
           <input
             name="max_budget"
@@ -108,14 +109,14 @@ const CreateProjectForm = () => {
             placeholder="Max Budget"
             value={form.max_budget}
             onChange={handleChange}
-            className="w-full border px-4 py-2 rounded"
+            className="input"
           />
         </div>
         <select
           name="currency"
           value={form.currency}
           onChange={handleChange}
-          className="w-full border px-4 py-2 rounded"
+          className="select"
         >
           <option value="USD">USD</option>
           <option value="NGN">NGN</option>
@@ -125,9 +126,9 @@ const CreateProjectForm = () => {
           type="file"
           multiple
           onChange={handleFileChange}
-          className="w-full border p-2 rounded"
+          className="file-input"
         />
-        <div className="flex justify-between mt-4">
+        <div className="form-buttons">
           <button
             type="reset"
             onClick={() => {
@@ -143,15 +144,11 @@ const CreateProjectForm = () => {
               });
               setAttachments([]);
             }}
-            className="border px-6 py-2 rounded text-purple-800 hover:bg-purple-100"
+            className="cancel-button"
           >
             Cancel
           </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-purple-700 text-white px-6 py-2 rounded shadow hover:bg-purple-800"
-          >
+          <button type="submit" disabled={loading} className="submit-button">
             {loading ? "Posting..." : "Post Job"}
           </button>
         </div>
