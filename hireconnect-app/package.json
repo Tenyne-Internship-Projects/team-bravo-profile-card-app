@@ -11,6 +11,9 @@
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@hookform/resolvers": "^5.1.1",
