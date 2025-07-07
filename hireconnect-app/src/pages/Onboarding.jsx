@@ -11,18 +11,38 @@ const Onboarding = () => {
       <section className="hero-section">
         <div className="hero-content">
           <h1 className="hero-title">
-            Hire Top Talents or Find Your Dream Gig
+            Hire skilled freelancers or land your next big freelance gig.
           </h1>
           <p className="hero-subtext">
-            Whether you're building your team or launching your freelance
-            career, HireConnect is your gateway to opportunity.
+            Whether you're kickstarting your freelance journey or landing your
+            next big gig, HireConnect connects you with the right opportunities
+            to grow and thrive.
           </p>
-          <button
-            onClick={() => navigate("/signup?role=FREELANCER")}
-            className="btn-primary"
-          >
-            Get Started
-          </button>
+          <div className="text-center space-y-2">
+            <div className="button-with-label">
+              <span className="freelancer-label">As a Freelancer</span>
+              <div className="freelancer-line"></div>
+            </div>
+
+            <button
+              onClick={() => navigate("/signup?role=FREELANCER")}
+              className="btn-primary"
+            >
+              Get Started
+            </button>
+
+            <p className="text-sm text-gray-500 mt-2">
+              Looking to hire?{" "}
+              <span
+                className="underline cursor-pointer"
+                onClick={() =>
+                  window.scrollTo({ top: 600, behavior: "smooth" })
+                }
+              >
+                Scroll down
+              </span>
+            </p>
+          </div>
         </div>
       </section>
 

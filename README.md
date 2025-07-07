@@ -1,98 +1,23 @@
-# HireConnect App – Frontend
+# Team Bravo – HIREConnect App
 
-This is the **frontend** for the [HireConnect](https://github.com/Tenyne-Internship-Projects/Team-Bravo-Profile-Card-Auth-API) application — a platform that enables freelancers and recruiters to connect, register, and manage professional profiles with a sleek, responsive interface.
-
-Built with **React.js**, **Tailwind CSS**, and **Framer Motion**, the app supports registration, authentication, animated profile cards, and secure verification flows.
+This is the **frontend application** for the KConnect Profile Card system, built with **React.js**, **Tailwind CSS**, and **Framer Motion**. It enables users to register, verify their email via OTP, log in, and manage rich professional profiles including uploading avatars, documents, and showcasing skills.
 
 ---
 
-## Tech Stack
+## Project Overview
 
-- **React.js** – SPA with React Router
-- **Tailwind CSS** – Utility-first styling
-- **Framer Motion** – Animated transitions
-- **React Toastify** – Toast notifications
-- **Axios** – HTTP client
-- **Vite** – Development bundler
+A clean, responsive, and intuitive frontend app for managing professional profiles. This frontend connects seamlessly with the [Profile Card & Auth API (Backend)](https://github.com/Tenyne-Internship-Projects/Team-Bravo-Profile-Card-Auth-API).
+
+> Live Demo: [team-bravo-profile-card-auth-app.vercel.app](https://HireConnect.vercel.app)
 
 ---
 
-## Project Structure
+### Loom Demo _(Suggested)_
 
-```
+- Showcase of registration, OTP verification, and profile editing.
+- Highlight profile view, upload interactions, and mobile responsiveness.
 
-hireConnect-app/
-├── public/               # Static files (logo, favicon)
-├── src/
-│   ├── assets/           # Logos, icons, and image assets
-│   ├── components/       # Shared UI components (e.g., Navbar)
-│   ├── context/          # AppContext for auth and user state
-│   ├── pages/            # Route-based views (Signin, Profile, etc.)
-│   ├── styles/           # CSS/Tailwind overrides
-│   ├── App.jsx           # Main app routes
-│   └── main.jsx          # React entry point
-├── .env                  # Frontend env config (see below)
-├── tailwind.config.js    # Tailwind customization
-└── package.json          # Project dependencies and scripts
-
-```
-
----
-
-## Environment Setup
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/Tenyne-Internship-Projects/team-bravo-profile-card-app.git
-cd team-bravo-profile-card-app
-```
-
-### 2. Configure Environment Variables
-
-Create a `.env` file in the root:
-
-```env
-VITE_BACKEND_URL=https://team-bravo-profile-card-auth-api.onrender.com
-```
-
-> Or use `http://localhost:5000` if running the backend locally.
-
-### 3. Install Dependencies
-
-```bash
-npm install
-```
-
-### 4. Start the Development Server
-
-```bash
-npm run dev
-```
-
-Open: [http://localhost:5173](http://localhost:5173)
-
----
-
-## Live Demo
-
-Frontend: [https://team-bravo-profile-card-app.vercel.app](https://team-bravo-profile-card-app.vercel.app)
-Backend: [https://team-bravo-profile-card-auth-api.onrender.com](https://team-bravo-profile-card-auth-api.onrender.com)
-
----
-
-## Route Overview
-
-| Path                  | Component          | Description                  |
-| --------------------- | ------------------ | ---------------------------- |
-| `/`                   | `Home.jsx`         | Public homepage (Onboarding) |
-| `/signup`             | `SignUp.jsx`       | Role-based registration      |
-| `/signin`             | `Signin.jsx`       | User login                   |
-| `/verify-email`       | `Emailverify.jsx`  | Email OTP verification       |
-| `/reset-password`     | `Resetpswd.jsx`    | Request password reset       |
-| `/confirm-reset/:tkn` | `ConfirmReset.jsx` | Enter new password           |
-| `/profile`            | `Profilecard.jsx`  | Protected user profile       |
-| `/edit-profile`       | `EditProfile.jsx`  | Protected profile editor     |
+> **Loom Demo Link**: _Add Loom video link here_
 
 ---
 
@@ -102,104 +27,209 @@ Backend: [https://team-bravo-profile-card-auth-api.onrender.com](https://team-br
 | ---------------------------------------- | ------------------------------------ | ------------------------------------ |
 | ![Onboarding](./screenshots/screen1.png) | ![Signin](./screenshots/screen2.png) | ![Signup](./screenshots/screen3.png) |
 
-| Reset Password                              | Email Verification                        | Register                                                                        |
-| ------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------- |
-| ![ResetPassword](./screenshots/screen4.png) | ![VerifyEmail](./screenshots/screen5.png) | ![Register](./screenshots/screen6a.png) ![Register](./screenshots/screen6b.png) |
+| Verify Email                         | Reset Password                      | Register                                |
+| ------------------------------------ | ----------------------------------- | --------------------------------------- |
+| ![Verify](./screenshots/screen5.png) | ![Reset](./screenshots/screen4.png) | ![Register](./screenshots/screen6a.png) |
 
-| Profile                                                                       | Edit Profile                                                            |
-| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| ![Profile](./screenshots/screen7a.png) ![Profile](./screenshots/screen7b.png) | ![Edit](./screenshots/screen8a.png) ![Edit](./screenshots/screen8b.png) |
+| Profile Display                        | Edit Profile                        |
+| -------------------------------------- | ----------------------------------- |
+| ![Profile](./screenshots/screen7a.png) | ![Edit](./screenshots/screen8a.png) |
 
 ---
 
-## Authentication & API
+## Key Features
 
-- **JWT** stored securely and used for protected route access
-- **Axios** configured to include auth token (via context)
-- **API Base URL** is read from `.env`
+- Email OTP verification with countdown
+- Animated profile cards using **Framer Motion**
+- Avatar and document upload with preview
+- Responsive UI using **Tailwind CSS**
+- Centralized state via **React Context API**
+- Mobile-first design
+- Real-time form validation and notifications
 
-Example call:
+---
 
-```js
-axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/signin`, {
-  email,
-  password,
-});
+## Tech Stack
+
+- React.js + Vite
+- Tailwind CSS
+- React Router DOM
+- Axios (API communication)
+- React Toastify (alerts and notifications)
+- Framer Motion (animations)
+
+---
+
+## Project Structure
+
+```
+hireConnect-app/
+├── public/                   # Static files
+├── src/
+│   ├── assets/               # Logos, images
+│   ├── components/           # Reusable UI components
+│   ├── context/              # Global state via AppContext
+│   ├── layout/               # Page layout (e.g., AuthLayout)
+│   ├── pages/                # Main route pages (Register, Profile, etc.)
+│   ├── api/                  # Axios API calls
+│   ├── styles/               # Global and page-specific CSS
+│   ├── App.jsx               # Main router and route guards
+│   └── main.jsx              # App entry point
+├── .env                      # Environment variables
+├── package.json
+├── tailwind.config.js
+└── vite.config.js
 ```
 
 ---
 
-## Deployment Notes
+## Getting Started
 
-### Deploy to Vercel
+### 1. Clone the Repo
 
-1. Push to GitHub
-2. Connect GitHub repo on [vercel.com](https://vercel.com/)
-3. Set Environment Variable: `VITE_BACKEND_URL`
-4. Done
+```bash
+git clone https://github.com/Tenyne-Internship-Projects/team-bravo-profile-card-app.git
+cd team-bravo-profile-card-app/hireConnect-app
+```
+
+### 2. Set Environment Variables
+
+Create a `.env` file:
+
+```env
+VITE_BACKEND_URL=http://localhost:3000
+```
+
+> Replace with your live backend URL in production.
+
+### 3. Install Dependencies
+
+```bash
+npm install
+```
+
+### 4. Start Development Server
+
+```bash
+npm run dev
+```
+
+> App runs locally on: `http://localhost:5173`
 
 ---
 
-## Troubleshooting
+## Route Overview
 
-| Issue                     | Solution                                                          |
-| ------------------------- | ----------------------------------------------------------------- |
-| `useState is not defined` | Import `useState` at the top of your component file               |
-| Blank `/profile` page     | Ensure you're importing `useEffect`, `useContext`, and `useState` |
-| CORS issues               | Make sure backend allows CORS from frontend domain                |
-| Favicon/logo not loading  | Confirm correct path: `/assets/kconnect.png`                      |
+| Path              | Page Component    | Description                             |
+| ----------------- | ----------------- | --------------------------------------- |
+| `/`               | `Onboarding.jsx`  | Landing page / onboarding               |
+| `/register`       | `Register.jsx`    | Register new user profile               |
+| `/login`          | `Signin.jsx`      | Login with email and password           |
+| `/verify-email`   | `Emailverify.jsx` | Email OTP verification                  |
+| `/reset-password` | `Resetpswd.jsx`   | Request and confirm password reset      |
+| `/profile`        | `ProfileCard.jsx` | View authenticated user's profile       |
+| `/edit-profile`   | `EditProfile.jsx` | Update profile details and upload files |
+
+---
+
+## API Integration
+
+All API requests use Axios with a dynamic `VITE_BACKEND_URL`.
+
+```js
+axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, payload);
+```
+
+> Ensure CORS is enabled on the backend for development and production.
+
+---
+
+## File Upload Flow
+
+### Avatar Upload
+
+- Avatar files are uploaded via `form-data` to `/api/profile/upload-avatar`
+- Preview and update profile image instantly
+
+### Document Uploads
+
+- Up to 5 PDF/DOCX files supported via `/api/profile/documents`
+- Visual tags added to display uploaded filenames
+
+---
+
+## Testing (Manual)
+
+Use browser devtools or Postman to:
+
+- Inspect API responses for registration and verification
+- Confirm JWT tokens are stored (via cookies or localStorage)
+- Check document/avatar upload size and MIME type restrictions
+
+---
+
+## Deployment
+
+Frontend is Vite-powered and optimized for deployment on platforms like **Vercel**, **Netlify**, or **Render**.
+
+> For Vercel:
+
+```bash
+npm run build
+# Deploy `/dist` folder
+```
+
+Ensure correct `VITE_BACKEND_URL` is set in Vercel Environment Settings.
+
+---
+
+## To-Do / Improvements
+
+- [ ] Offline/No-network handling
+- [ ] Dark mode toggle
+- [ ] Drag-and-drop document upload
+- [ ] Better responsive preview for large document filenames
+- [ ] Full Cypress test coverage
+
+---
+
+## Team Bravo Members
+
+| Name            | Role            |
+| --------------- | --------------- |
+| Light Ikoyo     | Backend         |
+| Ashaolu Samson  | Backend         |
+| Ja’Afar Sallau  | Frontend        |
+| Dandy Friday    | Frontend        |
+| Victor Idebi    | QA              |
+| Solomon Ogar    | Product Manager |
+| Emmanuel Olowo  | UI/UX           |
+| Omoshebi Akanni | UI/UX           |
 
 ---
 
 ## Contributing
 
-We welcome all contributions!
+We welcome PRs and collaboration!
 
-1. Fork the repo
-2. Create a branch: `git checkout -b feat/your-feature`
-3. Commit your work: `git commit -m "feat: awesome feature"`
-4. Push and open a Pull Request
+```bash
+# 1. Fork the repository
+# 2. Create a feature branch
+git checkout -b feature/your-feature
 
----
+# 3. Commit and push
+git commit -m "feat: add your feature"
+git push origin feature/your-feature
+```
 
-## Team & Attribution
-
-Developed by **Team Bravo**
-Part of the [Tenyne Innovations Internship Program](https://github.com/Tenyne-Internship-Projects)
-
-GitHub: [Tenyne-Internship-Projects](https://github.com/Tenyne-Internship-Projects)
+Then open a Pull Request to the `main` branch.
 
 ---
 
-## License
+## Acknowledgments
 
-MIT © Tenyne Innovations
+Thanks to **Tenyne Technologies** for leading this collaborative learning experience. Special appreciation to every intern and mentor who contributed to this project.
 
----
-
-## Thank You
-
-Thank you for checking out the **HireConnect App**.  
-This project is part of the **Tenyne Innovations Internship Program** and was proudly developed by **Team Bravo**.
-
-We deeply appreciate your interest, support, and any feedback you may have to help us grow. ❤️
-
----
-
-## Collaboration & Ideas
-
-We welcome all collaborators, testers, and contributors!
-
-Whether you're a designer, developer, or just someone with a great idea — we’d love to hear from you.
-
-If you’d like to:
-
-- Report a bug
-- Suggest a new feature
-- Join the project as a contributor
-
-Please feel free to open an issue or pull request, or email us directly at [**tenyne.innovations@gmail.com**](mailto:tenyne.innovations@gmail.com).
-
-Let’s build something amazing together!
+> “Great things in business are never done by one person. They’re done by a team.” – Steve Jobs
 
 ---
