@@ -1,125 +1,99 @@
-/* ProjectCard.css */
-
 .project-card {
-  cursor: pointer;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease-in-out;
-  background-color: #ffffff;
-}
-
-.project-card:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-
-.project-card.selected {
-  border-color: #7c3aed;
-  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
-}
-
-.project-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s ease;
 }
 
-.logo-placeholder {
-  width: 3rem;
-  height: 3rem;
-  background-color: #f3f4f6;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #7c3aed;
+.project-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.favorite-button {
-  font-size: 1.25rem;
-  color: #7c3aed;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.project-company {
-  font-size: 0.875rem;
-  color: #6b7280;
+.project-info {
+  flex: 1;
 }
 
 .project-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #4c1d95;
-  margin-top: 0.25rem;
-}
-
-.project-description {
-  font-size: 0.875rem;
-  color: #4b5563;
-  margin-top: 0.5rem;
-}
-
-.project-skills {
-  display: flex;
-  gap: 0.25rem;
-  flex-wrap: wrap;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: #7c3aed;
-}
-
-.project-skill {
-  background-color: #ede9fe;
-  padding: 0.25rem 0.5rem;
-  border-radius: 9999px;
+  margin-bottom: 0.5rem;
+  color: #111827;
 }
 
 .project-meta {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.skills-badge-group {
   display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
-.project-meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.project-budget {
-  color: #7c3aed;
-  font-weight: 500;
-}
-
-.project-date {
-  text-align: right;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.skill-badge {
+  font-size: 0.75rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+}
+
+.job-id {
   font-size: 0.75rem;
   color: #9ca3af;
+  margin-top: 0.25rem;
 }
 
-.project-apply {
-  text-align: right;
-  margin-top: 1rem;
+.project-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.apply-btn {
-  background-color: #302b63;
+.project-btn {
+  background-color: #2563eb;
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s ease;
 }
 
-.apply-btn:hover {
-  background-color: #241a4f;
+.project-btn:hover {
+  background-color: #1e40af;
+}
+
+.project-badge {
+  font-size: 0.75rem;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .project-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-action {
+    align-items: flex-start;
+    margin-top: 1rem;
+  }
 }

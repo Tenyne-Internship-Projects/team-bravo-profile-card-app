@@ -1,51 +1,51 @@
-import React, { useState, useContext, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AppContext } from "../context/AppContext";
+import { confirmResetPassword } from "../api/authApi";
 import AuthLayout from "../layout/AuthLayout";
 import { CheckCircle } from "lucide-react";
-import { confirmResetPassword } from "../api/authApi";
-
-import "../styles/auth.css";
-import "../styles/ConfirmReset.css"; // ✅ External styles here
+import "../styles/ConfirmReset.css"; // External CSS
 
 const ConfirmReset = () => {
-  const { token } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
+  const email = location.state?.email;
 
-  const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const passwordChecks = useMemo(
-    () => ({
-      length: password.length >= 8,
-      number: /\d/.test(password),
-      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-    }),
-    [password]
-  );
+  useEffect(() => {
+    if (!email) navigate("/reset-password");
+  }, [email, navigate]);
+
+  const passwordChecks = useMemo(() => ({
+    length: newPassword.length >= 8,
+    number: /\d/.test(newPassword),
+    special: /[!@#$%^&*(),.?":{}|<>]/.test(newPassword),
+  }), [newPassword]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!password || !confirmPassword) {
+    if (!otp || !newPassword || !confirmPassword) {
       toast.warning("Please fill in all fields");
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
 
     try {
       setLoading(true);
-      await confirmResetPassword({ token, password });
-      toast.success("Password reset successful! Redirecting...");
-      setTimeout(() => navigate("/signin"), 3000);
+      await confirmResetPassword({ email, otp, newPassword });
+      toast.success("Password reset successful!");
+      navigate("/signin");
     } catch (err) {
-      toast.error(err.message || "Reset failed. Try again.");
+      toast.error(err.message || "Reset failed.");
     } finally {
       setLoading(false);
     }
@@ -53,23 +53,31 @@ const ConfirmReset = () => {
 
   return (
     <AuthLayout showBack={false}>
-      <img
-        src="/assets/kconnect.png"
-        alt="KConnect Logo"
-        className="logo-img"
-        onClick={() => navigate("/")}
-      />
-
       <div className="auth-wrapper">
-        <h1 className="auth-title text-center">Set New Password</h1>
+        <h1 className="auth-title">Enter Reset Code</h1>
+        <p className="auth-description">
+          We sent a 6-digit code to <strong>{email}</strong>. Enter it below with your new password.
+        </p>
 
         <form onSubmit={handleSubmit} className="auth-form">
+          <div>
+            <label className="auth-label">Reset Code (OTP)</label>
+            <input
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Enter the 6-digit code"
+              className="auth-input"
+              required
+            />
+          </div>
+
           <div>
             <label className="auth-label">New Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Enter new password"
               className="auth-input"
               required
@@ -89,45 +97,21 @@ const ConfirmReset = () => {
           </div>
 
           <div className="password-checklist">
-            <p
-              className={`password-check ${
-                passwordChecks.length ? "text-green-600" : "text-gray-500"
-              }`}
-            >
-              <CheckCircle
-                className={`w-4 h-4 ${
-                  passwordChecks.length ? "text-green-600" : "text-gray-400"
-                }`}
-              />
+            <p className={`password-check ${passwordChecks.length ? "text-green-600" : "text-gray-500"}`}>
+              <CheckCircle className={`${passwordChecks.length ? "text-green-600" : "text-gray-400"}`} />
               At least 8 characters
             </p>
-            <p
-              className={`password-check ${
-                passwordChecks.number ? "text-green-600" : "text-gray-500"
-              }`}
-            >
-              <CheckCircle
-                className={`w-4 h-4 ${
-                  passwordChecks.number ? "text-green-600" : "text-gray-400"
-                }`}
-              />
+            <p className={`password-check ${passwordChecks.number ? "text-green-600" : "text-gray-500"}`}>
+              <CheckCircle className={`${passwordChecks.number ? "text-green-600" : "text-gray-400"}`} />
               Includes a number
             </p>
-            <p
-              className={`password-check ${
-                passwordChecks.special ? "text-green-600" : "text-gray-500"
-              }`}
-            >
-              <CheckCircle
-                className={`w-4 h-4 ${
-                  passwordChecks.special ? "text-green-600" : "text-gray-400"
-                }`}
-              />
+            <p className={`password-check ${passwordChecks.special ? "text-green-600" : "text-gray-500"}`}>
+              <CheckCircle className={`${passwordChecks.special ? "text-green-600" : "text-gray-400"}`} />
               Includes a special character
             </p>
           </div>
 
-          <button type="submit" disabled={loading} className="auth-button">
+          <button type="submit" disabled={loading} className="auth-button mt-2">
             {loading ? "Resetting..." : "Reset Password"}
           </button>
         </form>

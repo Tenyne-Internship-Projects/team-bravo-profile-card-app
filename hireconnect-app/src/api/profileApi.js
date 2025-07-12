@@ -1,64 +1,55 @@
-import axios from "axios";
 import apiClient from "../api/apiClient";
 
-// Example: fetch user profile
-export const getProfile = async () => {
-  const res = await apiClient.get("/api/user/profile");
-  return res.data;
-};
+const API = apiClient;
+const PROFILE_BASE = "/api/profile";
 
-const API = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
-  withCredentials: true,
-});
-
-// 1. Create Profile
+//  Create user profile
 export const createProfile = async (profileData) => {
-  return await API.post("/", profileData);
+  return await API.post(PROFILE_BASE, profileData);
 };
 
-// 2. Get Logged-in User Profile
+//  Get logged-in user’s profile
 export const getMyProfile = async () => {
-  return await API.get("/");
+  return await API.get(PROFILE_BASE);
 };
 
-// 3. Get All Profiles (Admin/Recruiter only)
+//  Get all profiles (Admin/Recruiter only)
 export const getAllProfiles = async (query = {}) => {
-  return await API.get("/all", { params: query });
+  return await API.get(`${PROFILE_BASE}/all`, { params: query });
 };
 
-// 4. Update Profile
+//  Update profile
 export const updateProfile = async (profileData) => {
-  return await API.put("/", profileData);
+  return await API.put(PROFILE_BASE, profileData);
 };
 
-// 5. Delete Profile
+//  Delete profile
 export const deleteProfile = async () => {
-  return await API.delete("/");
+  return await API.delete(PROFILE_BASE);
 };
 
-// 6. Update Availability
+//  Update availability status
 export const updateAvailability = async (availabilityData) => {
-  return await API.put("/availability", availabilityData);
+  return await API.put(`${PROFILE_BASE}/availability`, availabilityData);
 };
 
-// 7. Upload Avatar
+//  Upload avatar image
 export const uploadAvatar = async (avatarFile) => {
   const formData = new FormData();
   formData.append("avatar", avatarFile);
-  return await API.post("/upload-avatar", formData);
+  return await API.post(`${PROFILE_BASE}/upload-avatar`, formData);
 };
 
-// 8. Upload Documents
+//  Upload document files
 export const uploadDocuments = async (documentFiles) => {
   const formData = new FormData();
   documentFiles.forEach((file) => {
     formData.append("documents", file);
   });
-  return await API.post("/upload-documents", formData);
+  return await API.post(`${PROFILE_BASE}/upload-documents`, formData);
 };
 
-// 9. Delete Document by filename
+//  Delete a specific document by filename
 export const deleteDocument = async (filename) => {
-  return await API.delete(`/documents/${filename}`);
+  return await API.delete(`${PROFILE_BASE}/documents/${filename}`);
 };

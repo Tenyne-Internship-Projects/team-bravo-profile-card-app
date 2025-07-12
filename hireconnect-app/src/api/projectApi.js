@@ -1,21 +1,11 @@
-import axios from "axios";
 import apiClient from "../api/apiClient";
 
-// Example: fetch user profile
-export const getProfile = async () => {
-  const res = await apiClient.get("/api/user/profile");
-  return res.data;
-};
+const PROJECT_BASE = "/api/projects";
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
-/**
- * Get all projects with optional filters and pagination
- * @param {Object} params - e.g., { search, location, tags, min_budget, max_budget, page }
- */
+//  Get all projects (with optional filters, pagination, search)
 export const getProjects = async (params = {}) => {
   try {
-    const res = await axios.get(BASE_URL, { params });
+    const res = await apiClient.get(PROJECT_BASE, { params });
     return res.data;
   } catch (err) {
     console.error("Error fetching projects:", err);
@@ -23,13 +13,10 @@ export const getProjects = async (params = {}) => {
   }
 };
 
-/**
- * Get a single project by ID
- * @param {number|string} id
- */
+//  Get a single project by ID
 export const getProjectById = async (id) => {
   try {
-    const res = await axios.get(`${BASE_URL}/${id}`);
+    const res = await apiClient.get(`${PROJECT_BASE}/${id}`);
     return res.data;
   } catch (err) {
     console.error("Error fetching project:", err);
@@ -37,18 +24,11 @@ export const getProjectById = async (id) => {
   }
 };
 
-/**
- * Create a new project (must be authenticated + authorized)
- * @param {FormData} formData - include all fields + file attachments
- * @param {string} token - JWT token
- */
-export const createProject = async (formData, token) => {
+//  Create new project (must be authenticated)
+export const createProject = async (formData) => {
   try {
-    const res = await axios.post(BASE_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
+    const res = await apiClient.post(PROJECT_BASE, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data;
   } catch (err) {
@@ -57,19 +37,10 @@ export const createProject = async (formData, token) => {
   }
 };
 
-/**
- * Update an existing project by ID
- * @param {number|string} id
- * @param {Object} updatedData
- * @param {string} token
- */
-export const updateProject = async (id, updatedData, token) => {
+//  Update project by ID
+export const updateProject = async (id, updatedData) => {
   try {
-    const res = await axios.put(`${BASE_URL}/${id}`, updatedData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.put(`${PROJECT_BASE}/${id}`, updatedData);
     return res.data;
   } catch (err) {
     console.error("Error updating project:", err);
@@ -77,36 +48,34 @@ export const updateProject = async (id, updatedData, token) => {
   }
 };
 
-/**
- * Delete a project by ID
- * @param {number|string} id
- * @param {string} token
- */
-export const deleteProject = async (id, token) => {
+//  Delete project by ID
+export const deleteProject = async (id) => {
   try {
-    const res = await axios.delete(`${BASE_URL}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.delete(`${PROJECT_BASE}/${id}`);
     return res.data;
   } catch (err) {
     console.error("Error deleting project:", err);
     throw err.response?.data || { message: "Failed to delete project." };
   }
 };
+
 /**
  * Apply to a project
- * @param {number|string} projectId
- * @param {Object} data - e.g., { coverLetter, resume }
+ * @param {string | number} projectId
+ * @param {Object} formData - e.g. { coverLetter, resume }
  */
-export async function applyToProject(projectId, data) {
+export const applyToProject = async (projectId, formData) => {
   try {
-    const res = await axios.post(`/api/projects/${projectId}/apply`, data, {
-      withCredentials: true,
-    });
+    const res = await apiClient.post(
+      `${PROJECT_BASE}/${projectId}/apply`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
     return res.data;
   } catch (err) {
-    throw new Error(err?.response?.data?.message || "Application failed");
+    console.error("Error applying to project:", err);
+    throw err.response?.data || { message: "Failed to apply to project." };
   }
-}
+};

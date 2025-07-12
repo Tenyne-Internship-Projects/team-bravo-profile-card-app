@@ -102,7 +102,7 @@ const Emailverify = () => {
       toast.success(data.message);
       clearInputs();
       await getUserData?.();
-      navigate("/register");
+      navigate("/signin");
     } catch (err) {
       toast.error(err.message || "Verification failed.");
     }

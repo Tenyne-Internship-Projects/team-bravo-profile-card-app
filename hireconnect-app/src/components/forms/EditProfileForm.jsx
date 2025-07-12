@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DocumentUploader from "../components/DocumentUploader";
 import DocumentList from "../components/DocumentList";
+import { motion } from "framer-motion";
+import { containerVariants, itemVariants } from "../utils/animations";
 
 const EditProfileForm = () => {
   const { userData, backendUrl, getUserData } = useContext(AppContext);
@@ -88,121 +90,62 @@ const EditProfileForm = () => {
 
   return (
     <div className="min-h-screen bg-blue-100 flex items-center justify-center p-4">
-      <form
+      <motion.form
         onSubmit={handleSubmit}
         className="w-full max-w-2xl bg-white p-6 rounded shadow space-y-4"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
-        <h2 className="text-2xl font-semibold text-[#302B63]">Edit Profile</h2>
+        <motion.h2
+          className="text-2xl font-semibold text-[#302B63]"
+          variants={itemVariants}
+        >
+          Edit Profile
+        </motion.h2>
 
         <div className="grid sm:grid-cols-2 gap-4">
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={form.fullName}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={form.username}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            value={form.phone}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="country"
-            placeholder="Country"
-            value={form.country}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="state"
-            placeholder="State"
-            value={form.state}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="city"
-            placeholder="City"
-            value={form.city}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="skills"
-            placeholder="Skills (comma-separated)"
-            value={form.skills}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="tools"
-            placeholder="Tools (comma-separated)"
-            value={form.tools}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="portfolio"
-            placeholder="Portfolio URL"
-            value={form.portfolio}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="github"
-            placeholder="GitHub URL"
-            value={form.github}
-            onChange={handleChange}
-            className="input"
-          />
-          <input
-            type="text"
-            name="linkedin"
-            placeholder="LinkedIn URL"
-            value={form.linkedin}
-            onChange={handleChange}
-            className="input"
-          />
+          {[
+            { name: "fullName", placeholder: "Full Name" },
+            { name: "username", placeholder: "Username" },
+            { name: "email", placeholder: "Email", type: "email" },
+            { name: "phone", placeholder: "Phone Number", type: "tel" },
+            { name: "country", placeholder: "Country" },
+            { name: "state", placeholder: "State" },
+            { name: "city", placeholder: "City" },
+            { name: "skills", placeholder: "Skills (comma-separated)" },
+            { name: "tools", placeholder: "Tools (comma-separated)" },
+            { name: "portfolio", placeholder: "Portfolio URL" },
+            { name: "github", placeholder: "GitHub URL" },
+            { name: "linkedin", placeholder: "LinkedIn URL" },
+          ].map(({ name, placeholder, type = "text" }) => (
+            <motion.input
+              key={name}
+              type={type}
+              name={name}
+              placeholder={placeholder}
+              value={form[name]}
+              onChange={handleChange}
+              className="input"
+              variants={itemVariants}
+            />
+          ))}
         </div>
 
-        <textarea
+        <motion.textarea
           name="bio"
           placeholder="Bio / About"
           value={form.bio}
           onChange={handleChange}
           rows={4}
           className="w-full border p-2 rounded text-sm"
+          variants={itemVariants}
         />
 
-        <div className="flex justify-between items-center flex-wrap gap-4">
+        <motion.div
+          className="flex justify-between items-center flex-wrap gap-4"
+          variants={itemVariants}
+        >
           <label className="bg-gray-300 text-[#302B63] px-4 py-2 rounded cursor-pointer">
             Upload Avatar
             <input
@@ -217,19 +160,19 @@ const EditProfileForm = () => {
             type="submit"
             className="bg-[#302B63] text-white px-6 py-2 rounded"
           >
-            <DocumentUploader
-              backendUrl={backendUrl}
-              getUserData={getUserData}
-            />
-            <DocumentList
-              documents={userData?.documents || []}
-              backendUrl={backendUrl}
-              getUserData={getUserData}
-            />
             Save Changes
           </button>
-        </div>
-      </form>
+        </motion.div>
+
+        <motion.div variants={itemVariants}>
+          <DocumentUploader backendUrl={backendUrl} getUserData={getUserData} />
+          <DocumentList
+            documents={userData?.documents || []}
+            backendUrl={backendUrl}
+            getUserData={getUserData}
+          />
+        </motion.div>
+      </motion.form>
     </div>
   );
 };

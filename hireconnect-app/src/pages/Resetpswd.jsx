@@ -13,22 +13,22 @@ const Resetpswd = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!email) {
-      toast.warning("Please enter your email");
-      return;
-    }
+  if (!email) {
+    toast.warning("Please enter your email");
+    return;
+  }
 
-    try {
-      await sendResetOtp(email);
-      setState("sent");
-      toast.success("Reset OTP sent! Check your inbox.");
-    } catch (error) {
-      toast.error(error.message || "Something went wrong");
-    }
-  };
-
+  try {
+  await sendResetOtp(email);
+  setState("sent");
+  toast.success("Reset OTP sent! Check your inbox.");
+  navigate("/confirm-reset", { state: { email } });
+} catch (error) {
+  toast.error(error.message || "Something went wrong");
+}
+};
   return (
     <AuthLayout backTo="/signin">
       {state === "unreset" ? (

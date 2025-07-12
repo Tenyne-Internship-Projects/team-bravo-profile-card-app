@@ -3,7 +3,7 @@ import { useState } from "react";
 import { favoriteProject, unfavoriteProject } from "@/api/favoriteApi";
 import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
 import { HeartIcon as OutlineHeart } from "@heroicons/react/24/outline";
-import "../styles/FavoriteToggle.css"; // ✅ Import external CSS
+import "../styles/FavoriteToggle.css";
 
 const FavoriteToggle = ({ projectId, isInitiallyFavorited }) => {
   const [favorited, setFavorited] = useState(isInitiallyFavorited);
@@ -31,8 +31,8 @@ const FavoriteToggle = ({ projectId, isInitiallyFavorited }) => {
     <button
       onClick={handleToggle}
       disabled={loading}
-      className="favorite-toggle-button"
-      title={favorited ? "Remove from favorites" : "Save to favorites"}
+      className={`favorite-toggle-button ${favorited ? "favorited" : ""}`}
+      aria-label={favorited ? "Unfavorite project" : "Favorite project"}
     >
       <HeartIcon className="favorite-icon" />
     </button>

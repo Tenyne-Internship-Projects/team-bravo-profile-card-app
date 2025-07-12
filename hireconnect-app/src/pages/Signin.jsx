@@ -1,17 +1,17 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaGithub } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { Mail, Lock } from "lucide-react";
 import AuthLayout from "../layout/AuthLayout";
 import { loginUser } from "../api/authApi";
 import { toast } from "react-toastify";
 import { AppContext } from "../context/AppContext";
+import OAuthLoginButtons from "../components/OAuthLoginButtons";
 import "../styles/auth.css";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const { setUserData, setIsLoggedIn, getUserData } = useContext(AppContext);
+  const { setIsLoggedIn, getUserData } = useContext(AppContext);
+
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) =>
@@ -26,7 +26,7 @@ const Signin = () => {
       toast.success("Login successful!");
 
       setIsLoggedIn(true);
-      await getUserData?.(); // fetch profile to update context
+      await getUserData?.();
 
       navigate("/profile");
     } catch (error) {
@@ -34,50 +34,12 @@ const Signin = () => {
     }
   };
 
-  const handleOAuth = (provider) => {
-    const authWindow = window.open(
-      `${backendUrl}/api/auth/${provider}`,
-      "_blank",
-      "width=600,height=600"
-    );
-
-    const checkPopup = setInterval(() => {
-      try {
-        if (authWindow.closed) {
-          clearInterval(checkPopup);
-          // After OAuth window closes, you can call is-auth
-          // to check if login succeeded
-          getUserData(); // Assuming it sets isLoggedIn
-          toast.success("Logged in via OAuth");
-          navigate("/profile");
-        }
-      } catch (err) {
-        // Ignore cross-origin error
-      }
-    }, 1000);
-  };
-
   return (
     <AuthLayout backTo="/signup">
       <h1 className="auth-title">Sign in to your account</h1>
 
-      {/* OAuth Buttons */}
-      <div className="w-full space-y-3">
-        <button
-          onClick={() => handleOAuth("google")}
-          className="auth-button-alt"
-        >
-          <FcGoogle className="w-5 h-5 text-[#4285F4]" />
-          Continue with Google
-        </button>
-        <button
-          onClick={() => handleOAuth("github")}
-          className="auth-button-alt"
-        >
-          <FaGithub className="w-5 h-5 text-gray-800" />
-          Continue with GitHub
-        </button>
-      </div>
+      {/* Reusable OAuth buttons */}
+      <OAuthLoginButtons />
 
       {/* Divider */}
       <div className="auth-divider">
@@ -86,7 +48,7 @@ const Signin = () => {
         <span />
       </div>
 
-      {/* Login Form */}
+      {/* Email/password login form */}
       <form onSubmit={handleSubmit} className="auth-form">
         <div className="relative">
           <Mail className="auth-icon" />
@@ -114,7 +76,7 @@ const Signin = () => {
           />
         </div>
 
-        {/* Forgot Password */}
+        {/* Forgot password */}
         <div className="w-full text-right mb-2">
           <button
             type="button"
@@ -130,7 +92,7 @@ const Signin = () => {
         </button>
       </form>
 
-      {/* Signup Redirect */}
+      {/* Redirect to Sign Up */}
       <p className="auth-footer">
         Don’t have an account?{" "}
         <span onClick={() => navigate("/signup")}>Sign up</span>
