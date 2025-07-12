@@ -1,6 +1,7 @@
-// /src/components/ApplyModal.jsx
+// src/components/ApplyModal.jsx
 import React, { useState } from "react";
 import { useApplyToProject } from "../hooks/useApplyToProject";
+import "../styles/ApplyModal.css";
 
 const ApplyModal = ({ projectId, onClose }) => {
   const [form, setForm] = useState({
@@ -30,12 +31,9 @@ const ApplyModal = ({ projectId, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white rounded p-6 space-y-4 w-full max-w-xl max-h-[90vh] overflow-y-auto"
-      >
-        <h2 className="text-xl font-bold text-[#302B63]">Apply to Project</h2>
+    <div className="apply-modal-overlay">
+      <form onSubmit={handleSubmit} className="apply-modal-form">
+        <h2 className="apply-modal-title">Apply to Project</h2>
 
         <input
           type="text"
@@ -91,10 +89,8 @@ const ApplyModal = ({ projectId, onClose }) => {
           value={form.project_experience_summary}
           onChange={handleChange}
           rows={4}
-          className="w-full border p-2 rounded"
         />
 
-        {/* Binary questions */}
         {[
           "can_overlap_hours",
           "understands_commitment",
@@ -102,7 +98,7 @@ const ApplyModal = ({ projectId, onClose }) => {
           "comfortable_with_validation",
           "comfortable_with_ai_job",
         ].map((field) => (
-          <label key={field} className="flex items-center gap-2 text-sm">
+          <label key={field} className="checkbox-label">
             <input
               type="checkbox"
               name={field}
@@ -113,19 +109,11 @@ const ApplyModal = ({ projectId, onClose }) => {
           </label>
         ))}
 
-        <div className="flex justify-end gap-4">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-300 rounded text-[#302B63]"
-          >
+        <div className="apply-modal-buttons">
+          <button type="button" onClick={onClose} className="cancel-button">
             Cancel
           </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-6 py-2 bg-[#302B63] text-white rounded"
-          >
+          <button type="submit" disabled={loading} className="submit-button">
             {loading ? "Submitting..." : "Submit Application"}
           </button>
         </div>

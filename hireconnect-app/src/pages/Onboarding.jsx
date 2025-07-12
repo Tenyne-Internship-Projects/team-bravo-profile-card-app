@@ -7,7 +7,7 @@ const Onboarding = () => {
 
   return (
     <div className="onboarding-page">
-      {/*  HERO SECTION */}
+      {/* HERO SECTION */}
       <section className="hero-section">
         <div className="hero-content">
           <h1 className="hero-title">
@@ -46,7 +46,7 @@ const Onboarding = () => {
         </div>
       </section>
 
-      {/*  CLIENT SECTION */}
+      {/* CLIENT SECTION */}
       <section className="client-section">
         <h2 className="client-title">
           Build your dream team with exceptional freelancers

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import "../styles/DocumentList.css";
 
 const DocumentList = ({ documents = [], backendUrl, getUserData }) => {
   const handleDelete = async (filename) => {
@@ -18,27 +19,21 @@ const DocumentList = ({ documents = [], backendUrl, getUserData }) => {
   };
 
   if (!documents.length)
-    return <p className="text-sm text-gray-500">No documents uploaded.</p>;
+    return <p className="no-documents">No documents uploaded.</p>;
 
   return (
-    <ul className="space-y-2">
+    <ul className="document-list">
       {documents.map((doc, idx) => (
-        <li
-          key={idx}
-          className="flex justify-between items-center border p-2 rounded"
-        >
+        <li key={idx} className="document-item">
           <a
             href={`${backendUrl}/uploads/documents/${doc}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 underline truncate max-w-[80%]"
+            className="document-link"
           >
             {doc}
           </a>
-          <button
-            onClick={() => handleDelete(doc)}
-            className="text-red-600 hover:underline text-sm"
-          >
+          <button onClick={() => handleDelete(doc)} className="delete-button">
             Delete
           </button>
         </li>

@@ -1,10 +1,12 @@
-// src/components/ProjectList.jsx
 import { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import Pagination from "./Pagination";
 import JobDetailPanel from "./JobDetailPanel";
 import useProjectsFilter from "@/hooks/useProjectsFilter";
 import { getProjects } from "@/api/projectApi";
+import "../styles/ProjectList.css";
+import { motion } from "framer-motion";
+import { containerVariants, itemVariants } from "../utils/animations";
 
 const ProjectList = () => {
   const { filters } = useProjectsFilter();
@@ -52,23 +54,31 @@ const ProjectList = () => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-4 relative">
+    <div className="project-list-grid">
       {/* Left Section: Listing */}
-      <div className="col-span-2">
+      <div className="project-list-left">
         {loading ? (
-          <p className="text-center py-8">Loading projects...</p>
+          <p className="project-list-message">Loading projects...</p>
         ) : error ? (
-          <p className="text-red-500 text-center py-8">{error}</p>
+          <p className="project-list-error">{error}</p>
         ) : projects.length === 0 ? (
-          <p className="text-center py-8">No matching projects found.</p>
+          <p className="project-list-message">No matching projects found.</p>
         ) : (
-          projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              {...project}
-              onClick={() => setSelectedProject(project)}
-            />
-          ))
+          <motion.div
+            className="project-list-wrapper"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {projects.map((project) => (
+              <motion.div key={project.id} variants={itemVariants}>
+                <ProjectCard
+                  {...project}
+                  onClick={() => setSelectedProject(project)}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
         )}
 
         <Pagination
@@ -79,7 +89,7 @@ const ProjectList = () => {
       </div>
 
       {/* Right Section: Job Details */}
-      <div className="col-span-1">
+      <div className="project-list-right">
         {selectedProject && (
           <JobDetailPanel
             project={selectedProject}

@@ -1,0 +1,70 @@
+/* FilterBar.css */
+
+.filterbar-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filterbar-search {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.filterbar-budget-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterbar-budget-input {
+  width: 6rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.filterbar-separator {
+  color: #6b7280;
+}
+
+.filterbar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag-button {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  border: 1px solid #d1d5db;
+  color: #4b5563;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.tag-button.active {
+  background-color: #7c3aed;
+  color: white;
+  border-color: #7c3aed;
+}
+
+.clear-tags-btn {
+  font-size: 0.875rem;
+  color: #ef4444;
+  text-decoration: underline;
+  margin-left: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

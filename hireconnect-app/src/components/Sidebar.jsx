@@ -1,40 +1,68 @@
-import { useNavigate } from "react-router-dom";
+// src/components/Sidebar.jsx
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import {
+  Home,
+  Upload,
+  User,
+  FileText,
+  Heart,
+  Settings,
+  Eye,
+  Power,
+} from "lucide-react";
+import "@/styles/Sidebar.css";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [expanded, setExpanded] = useState(false);
+
+  const navItems = [
+    { icon: <Home size={20} />, label: "Home", path: "/" },
+    { icon: <Upload size={20} />, label: "Uploads", path: "/uploads" },
+    { icon: <User size={20} />, label: "Profile", path: "/profile" },
+    { icon: <FileText size={20} />, label: "Files", path: "/files" },
+    { icon: <Heart size={20} />, label: "Favourites", path: "/favorites" },
+    {
+      icon: <Settings size={20} />,
+      label: "Settings",
+      path: "/settings",
+    },
+    {
+      icon: <Eye size={20} />,
+      label: "Metrics",
+      path: "/metrics",
+    },
+  ];
+
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 shadow-lg p-4 h-full hidden md:block">
-      <h2 className="text-xl font-semibold text-purple-700 mb-6">
-        HireConnect
-      </h2>
+    <aside
+      className={`sidebar ${expanded ? "expanded" : ""}`}
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+    >
+      <div className="sidebar-wrapper">
+        {navItems.map((item) => (
+          <button
+            key={item.label}
+            className={`sidebar-btn ${isActive(item.path) ? "active" : ""}`}
+            onClick={() => navigate(item.path)}
+          >
+            {item.icon}
+            {expanded && <span className="sidebar-label">{item.label}</span>}
+          </button>
+        ))}
+      </div>
 
-      <nav className="space-y-4">
-        <button
-          onClick={() => navigate("/")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
-        >
-          Home
+      <div className="sidebar-footer">
+        <button className="sidebar-btn logout" onClick={() => navigate("/logout")}>
+          <Power size={20} />
+          {expanded && <span className="sidebar-label">Logout</span>}
         </button>
-        <button
-          onClick={() => navigate("/jobs")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
-        >
-          Jobs
-        </button>
-        <button
-          onClick={() => navigate("/profile")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
-        >
-          Profile
-        </button>
-        <button
-          onClick={() => navigate("/edit-profile")}
-          className="w-full text-left px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700"
-        >
-          Edit Profile
-        </button>
-      </nav>
+      </div>
     </aside>
   );
 };

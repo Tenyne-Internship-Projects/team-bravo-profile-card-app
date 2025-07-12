@@ -1,10 +1,11 @@
-import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import React, { useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { checkOAuthAuth } from "./api/oauthApi";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-// Page imports
+// Pages
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import SignUp from "./pages/SignUp";
@@ -15,45 +16,171 @@ import ConfirmReset from "./pages/ConfirmReset";
 import Profilecard from "./pages/Profilecard";
 import EditProfile from "./pages/EditProfile";
 import ErrorPage from "./pages/ErrorPage";
-// import Projects from "./pages/Projects";
+import Projects from "./pages/Projects";
+import DashboardLayout from "@/layout/DashboardLayout";
+import DashboardHome from "@/pages/DashboardHome";
+import Profile from "@/pages/Profile";
+import Files from "@/pages/Files";
 
-// Layouts and guards
+// Layouts & Guards
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Navbar from "./components/Navbar";
+import MainLayout from "@/layout/MainLayout";
+import PublicLayout from "@/layout/PublicLayout";
 
 const App = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  //  Global OAuth Auto-login Effect
+  useEffect(() => {
+    const handleOAuthRedirect = async () => {
+      const isOAuthRedirect =
+        location.pathname === "/signin" || location.pathname === "/signup";
+
+      if (isOAuthRedirect) {
+        try {
+          const { user, accessToken } = await checkOAuthAuth();
+          if (accessToken) {
+            localStorage.setItem("token", accessToken);
+          }
+
+          toast.success(`Welcome back, ${user.name || user.email}`);
+          navigate("/profile");
+        } catch (err) {
+          console.log("OAuth session not authenticated:", err.message);
+        }
+      }
+    };
+
+    handleOAuthRedirect();
+  }, [location.pathname, navigate]);
+
   return (
     <>
       <ToastContainer />
-      <Navbar /> {/* Navbar */}
+
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* Public Landing Pages */}
         <Route
-          path="/signin"
+          path="/"
           element={
             <PublicRoute>
-              <Signin />
+              <PublicLayout>
+                <Home />
+              </PublicLayout>
             </PublicRoute>
           }
         />
+
         <Route
           path="/signup"
           element={
             <PublicRoute>
-              <SignUp />
+              <PublicLayout>
+                <SignUp />
+              </PublicLayout>
             </PublicRoute>
           }
         />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/verify-email" element={<Emailverify />} />
-        <Route path="/reset-password" element={<Resetpswd />} />
-        <Route path="/confirm-reset/:token" element={<ConfirmReset />} />
+        <Route
+          path="/signin"
+          element={
+            <PublicRoute>
+              <PublicLayout>
+                <Signin />
+              </PublicLayout>
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/onboarding"
+          element={
+            <PublicRoute>
+              <PublicLayout>
+                <Onboarding />
+              </PublicLayout>
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/verify-email"
+          element={
+            <PublicRoute>
+              <PublicLayout>
+                <Emailverify />
+              </PublicLayout>
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <PublicRoute>
+              <PublicLayout>
+                <Resetpswd />
+              </PublicLayout>
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/confirm-reset"
+          element={
+            <PublicRoute>
+              <PublicLayout>
+                <ConfirmReset />
+              </PublicLayout>
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/confirm-reset/:token"
+          element={
+            <PublicRoute>
+              <PublicLayout>
+                <ConfirmReset />
+              </PublicLayout>
+            </PublicRoute>
+          }
+        />
+
+        {/* Public Projects Page (visible without login) */}
+<Route
+  path="/projects"
+  element={
+    <PublicRoute>
+      <Projects />  {/* No MainLayout here */}
+    </PublicRoute>
+  }
+/>
+
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profilecard />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route
+            path="/profile"
+            element={
+              <MainLayout>
+                <Profilecard />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/edit-profile"
+            element={
+              <MainLayout>
+                <EditProfile />
+              </MainLayout>
+            }
+          />
+           {/* Dashboard Routes - Nested Layout */}
+    <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route index element={<DashboardHome />} />
+      <Route path="profile" element={<Profile />} />
+      <Route path="files" element={<Files />} />
+      {/* Add more dashboard routes here */}
+       </Route>
         </Route>
 
         {/* 404 fallback */}

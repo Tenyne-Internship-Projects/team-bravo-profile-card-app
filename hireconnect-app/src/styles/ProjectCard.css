@@ -1,0 +1,99 @@
+.project-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-info {
+  flex: 1;
+}
+
+.project-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.project-meta {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.skills-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.skill-badge {
+  font-size: 0.75rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+}
+
+.job-id {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+
+.project-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.project-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.project-btn:hover {
+  background-color: #1e40af;
+}
+
+.project-badge {
+  font-size: 0.75rem;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .project-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-action {
+    align-items: flex-start;
+    margin-top: 1rem;
+  }
+}

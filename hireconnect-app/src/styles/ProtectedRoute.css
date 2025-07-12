@@ -1,0 +1,19 @@
+.protected-loading,
+.protected-unauthorized {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.protected-loading-text {
+  color: #302b63;
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 500; /* font-medium */
+}
+
+.protected-unauthorized-text {
+  color: #dc2626; /* red-600 */
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+}

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { getProjects } from "@/api/projectApi";
 import FilterBar from "@/components/FilterBar";
+import PublicHeader from "@/components/PublicHeader";
 import ProjectCard from "@/components/ProjectCard";
-import JobDetailPanel from "@/components/JobDetailPanel";
-import Sidebar from "@/components/Sidebar";
+import JobDetailModal from "@/components/JobDetailModal";
+import "../styles/Projects.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Projects = () => {
@@ -18,6 +19,7 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -41,67 +43,68 @@ const Projects = () => {
     setPage(1);
   };
 
+  const openJobDetailModal = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedProject(null);
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      <main className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-900">
+    <div className="projects-page">
+      <PublicHeader />
+
+      <main className="projects-main">
         <FilterBar filters={filters} onChange={handleSearch} />
 
         {loading ? (
-          <div className="text-center text-purple-600 mt-10">
-            Loading projects...
-          </div>
+          <div className="projects-loading">Loading projects...</div>
         ) : error ? (
-          <div className="text-red-600 text-center mt-10">{error}</div>
+          <div className="projects-error">{error}</div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 mt-6">
-            <div>
+          <>
+            <div className="projects-grid">
               {projects.map((project) => (
                 <ProjectCard
                   key={project.id}
                   project={project}
-                  isSelected={selectedProject?.id === project.id}
-                  onSelect={() => setSelectedProject(project)}
+                  onDetailsClick={() => openJobDetailModal(project)}
                 />
               ))}
-
-              <div className="flex justify-between items-center mt-6">
-                <button
-                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                  className="flex items-center px-4 py-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
-                  disabled={page === 1}
-                >
-                  <ChevronLeft size={18} className="mr-2" /> Prev
-                </button>
-
-                <span className="text-gray-600 dark:text-gray-300">
-                  Page {page}
-                </span>
-
-                <button
-                  onClick={() => setPage((prev) => prev + 1)}
-                  className="flex items-center px-4 py-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
-                >
-                  Next <ChevronRight size={18} className="ml-2" />
-                </button>
-              </div>
             </div>
 
-            <div>
-              {selectedProject ? (
-                <JobDetailPanel
-                  project={selectedProject}
-                  onClose={() => setSelectedProject(null)}
-                />
-              ) : (
-                <div className="text-center text-gray-500 dark:text-gray-400 mt-10">
-                  Select a project to view details
-                </div>
-              )}
+            <div className="projects-pagination">
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+              >
+                <ChevronLeft size={18} className="mr-2" />
+                Prev
+              </button>
+
+              <span>Page {page}</span>
+
+              <button onClick={() => setPage((prev) => prev + 1)}>
+                Next
+                <ChevronRight size={18} className="ml-2" />
+              </button>
             </div>
-          </div>
+          </>
         )}
       </main>
+
+      {/* Job Detail Modal - opened when a project is selected */}
+      {isModalOpen && selectedProject && (
+        <JobDetailModal isOpen={true} project={selectedProject} onClose={closeModal}>
+          <div className="modal-actions">
+            <button className="btn-primary">Apply Now</button>
+            <button className="btn-outline">Save to Favorites</button>
+          </div>
+        </JobDetailModal>
+      )}
     </div>
   );
 };

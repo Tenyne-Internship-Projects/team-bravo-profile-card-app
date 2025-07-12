@@ -1,5 +1,5 @@
-// src/components/FilterBar.jsx
 import { useState } from "react";
+import "../styles/FilterBar.css";
 
 const TAG_OPTIONS = ["Marketing", "Fulltime", "Freelance", "Remote"];
 
@@ -53,55 +53,48 @@ const FilterBar = ({ filters, onFilterChange }) => {
   };
 
   return (
-    <div className="flex flex-wrap gap-4 items-center justify-between bg-white p-4 border-b border-gray-200">
+    <div className="filterbar-container">
       {/* Search */}
       <input
         type="text"
         placeholder="Search by title, company, keywords"
         value={search}
         onChange={handleSearchChange}
-        className="flex-1 min-w-[200px] px-3 py-2 border rounded-md"
+        className="filterbar-search"
       />
 
       {/* Budget Filter */}
-      <div className="flex items-center gap-2">
+      <div className="filterbar-budget-group">
         <input
           type="number"
           placeholder="Min budget"
           value={minBudget}
           onChange={(e) => handleBudgetChange("min", e.target.value)}
-          className="w-24 px-2 py-1 border rounded-md"
+          className="filterbar-budget-input"
         />
-        <span className="text-gray-500">–</span>
+        <span className="filterbar-separator">–</span>
         <input
           type="number"
           placeholder="Max budget"
           value={maxBudget}
           onChange={(e) => handleBudgetChange("max", e.target.value)}
-          className="w-24 px-2 py-1 border rounded-md"
+          className="filterbar-budget-input"
         />
       </div>
 
       {/* Tags */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="filterbar-tags">
         {TAG_OPTIONS.map((tag) => (
           <button
             key={tag}
-            className={`px-3 py-1 rounded-full text-sm border ${
-              tags.includes(tag)
-                ? "bg-purple-600 text-white border-purple-600"
-                : "text-gray-600 border-gray-300"
-            }`}
+            className={`tag-button ${tags.includes(tag) ? "active" : ""}`}
             onClick={() => handleTagToggle(tag)}
           >
             {tag}
           </button>
         ))}
         {tags.length > 0 && (
-          <button
-            className="text-sm text-red-500 underline ml-2"
-            onClick={handleClear}
-          >
+          <button className="clear-tags-btn" onClick={handleClear}>
             Clear all
           </button>
         )}

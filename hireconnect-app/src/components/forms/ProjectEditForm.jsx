@@ -1,8 +1,9 @@
-// src/components/forms/ProjectEditForm.jsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProjectById, updateProject } from "@/api/projectApi";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+import { containerVariants, itemVariants } from "@/utils/animations";
 
 const ProjectEditForm = () => {
   const { id } = useParams();
@@ -76,57 +77,70 @@ const ProjectEditForm = () => {
   if (loading) return <p>Loading project...</p>;
 
   return (
-    <form
+    <motion.form
       onSubmit={handleSubmit}
       className="max-w-4xl mx-auto p-6 bg-white shadow rounded space-y-4"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
-      <h2 className="text-2xl font-semibold text-purple-700">Edit Project</h2>
+      <motion.h2
+        className="text-2xl font-semibold text-purple-700"
+        variants={itemVariants}
+      >
+        Edit Project
+      </motion.h2>
 
-      <input
+      <motion.input
         name="title"
         value={formData.title}
         onChange={handleChange}
         placeholder="Project Title"
         className="input"
         required
+        variants={itemVariants}
       />
 
-      <textarea
+      <motion.textarea
         name="description"
         value={formData.description}
         onChange={handleChange}
         placeholder="Short Description"
         rows={3}
         className="textarea"
+        variants={itemVariants}
       />
 
-      <textarea
+      <motion.textarea
         name="responsibilities"
         value={formData.responsibilities}
         onChange={handleChange}
         placeholder="Responsibilities"
         rows={3}
         className="textarea"
+        variants={itemVariants}
       />
 
-      <textarea
+      <motion.textarea
         name="requirements"
         value={formData.requirements}
         onChange={handleChange}
         placeholder="Requirements"
         rows={3}
         className="textarea"
+        variants={itemVariants}
       />
 
-      <input
+      <motion.input
         name="skills"
         value={formData.skills}
         onChange={handleChange}
         placeholder="Skills (comma separated)"
         className="input"
+        variants={itemVariants}
       />
 
-      <div className="flex space-x-4">
+      <motion.div className="flex space-x-4" variants={itemVariants}>
         <input
           type="number"
           name="min_budget"
@@ -143,27 +157,29 @@ const ProjectEditForm = () => {
           placeholder="Max Budget"
           className="input"
         />
-      </div>
+      </motion.div>
 
-      <select
+      <motion.select
         name="currency"
         value={formData.currency}
         onChange={handleChange}
         className="input"
+        variants={itemVariants}
       >
         <option value="USD">USD</option>
         <option value="NGN">NGN</option>
         <option value="EUR">EUR</option>
-      </select>
+      </motion.select>
 
-      <input
+      <motion.input
         type="file"
         multiple
         onChange={handleFileChange}
         className="input"
+        variants={itemVariants}
       />
 
-      <div className="flex justify-between pt-4">
+      <motion.div className="flex justify-between pt-4" variants={itemVariants}>
         <button
           type="button"
           onClick={() => navigate(-1)}
@@ -174,8 +190,8 @@ const ProjectEditForm = () => {
         <button type="submit" className="btn-primary">
           Update Project
         </button>
-      </div>
-    </form>
+      </motion.div>
+    </motion.form>
   );
 };
 

@@ -15,7 +15,7 @@ export const AppContextProvider = ({ children }) => {
 
   const getUserData = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/user/data`, {
+      const { data } = await axios.get(`${backendUrl}/api/profile/data`, {
         withCredentials: true,
       });
       if (data.success) {
@@ -25,6 +25,8 @@ export const AppContextProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,7 +38,9 @@ export const AppContextProvider = ({ children }) => {
 
       if (data.success) {
         setIsLoggedIn(true);
-        await getUserData();
+        setUserData(data.userData); // <- use data directly here
+      } else {
+        setIsLoggedIn(false);
       }
     } catch (error) {
       setIsLoggedIn(false);

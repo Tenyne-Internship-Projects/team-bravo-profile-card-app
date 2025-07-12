@@ -1,0 +1,86 @@
+.notification-wrapper {
+  position: relative;
+}
+
+.notification-icon {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 125%;
+  width: 300px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  overflow: hidden;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+.dropdown-header button {
+  background: none;
+  color: #007bff;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+}
+
+.dropdown-list {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.dropdown-item.unread {
+  background-color: #fef7f1;
+  font-weight: 500;
+}
+
+.dropdown-item.read {
+  color: #555;
+}
+
+.timestamp {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+}

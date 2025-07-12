@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Navbar.css";
+import "../styles/SiteHeader.css";
 
-const Navbar = () => {
+const SiteHeader = () => {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +23,7 @@ const Navbar = () => {
           <button onClick={() => navigate("/signup?role=RECRUITER")}>
             Recruiter
           </button>
-          <button onClick={() => navigate("/jobs")}>Job Listings</button>
+          <button onClick={() => navigate("/projects")}>Job Listings</button>
         </div>
 
         {/* Right nav links */}
@@ -43,4 +43,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SiteHeader;

@@ -1,0 +1,43 @@
+.oauth-buttons {
+  width: 100%;
+  max-width: 28rem; /* max-w-md */
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* space-y-3 */
+}
+
+.oauth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #f5f5f5;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: background 0.3s ease;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.oauth-button:hover {
+  background-color: #eaeaea;
+}
+
+/* Dark mode support */
+.dark .oauth-button {
+  background-color: #1f2937; /* Tailwind gray-800 */
+  border-color: #374151; /* Tailwind gray-700 */
+  color: #e5e7eb; /* Tailwind gray-200 */
+}
+
+.dark .oauth-button:hover {
+  background-color: #374151; /* Tailwind gray-700 */
+}
+
+.oauth-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}

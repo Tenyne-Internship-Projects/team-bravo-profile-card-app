@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { User, Mail, Lock, CheckCircle } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import AuthLayout from "../layout/AuthLayout";
 import { registerUser } from "../api/authApi";
+import OAuthLoginButtons from "../components/OAuthLoginButtons";
 import { toast } from "react-toastify";
 import "../styles/auth.css";
 
@@ -23,7 +22,6 @@ const SignUp = () => {
     secret: "",
   });
 
-  // Prioritize default user roles (FREELANCER, CLIENT)
   useEffect(() => {
     const validRoles = ["FREELANCER", "CLIENT", "RECRUITER", "ADMIN"];
     if (prefilledRole && validRoles.includes(prefilledRole.toUpperCase())) {
@@ -42,8 +40,17 @@ const SignUp = () => {
     [form.password]
   );
 
-  const handleChange = (e) =>
+  const requirements = [
+    { key: "length", label: "At least 12 characters" },
+    { key: "lowercase", label: "Lowercase letter" },
+    { key: "uppercase", label: "Uppercase letter" },
+    { key: "number", label: "Includes a number" },
+    { key: "special", label: "Special character" },
+  ];
+
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,52 +66,18 @@ const SignUp = () => {
 
       await registerUser(payload);
       toast.success("Registration successful!");
-
-      //  Save email to localStorage for OTP verification
       localStorage.setItem("user_email", form.email.trim().toLowerCase());
-
       navigate("/verify-email", { state: { email: form.email } });
     } catch (err) {
       toast.error(err.message || "Registration failed");
     }
   };
 
-  const handleOAuth = (provider) => {
-    const urls = {
-      google: "https://accounts.google.com/",
-      github: "https://github.com/your‑username",
-    };
-    window.location.href = urls[provider];
-  };
-
-  const requirements = [
-    { key: "length", label: "At least 12 characters" },
-    { key: "lowercase", label: "Lowercase letter" },
-    { key: "uppercase", label: "Uppercase letter" },
-    { key: "number", label: "Includes a number" },
-    { key: "special", label: "Special character" },
-  ];
-
   return (
     <AuthLayout backTo="/">
       <h1 className="auth-title">Create your account</h1>
 
-      <div className="w-full max-w-md space-y-3">
-        <button
-          onClick={() => handleOAuth("google")}
-          className="auth-button-alt"
-        >
-          <FcGoogle className="w-5 h-5" />
-          Continue with Google
-        </button>
-        <button
-          onClick={() => handleOAuth("github")}
-          className="auth-button-alt"
-        >
-          <FaGithub className="w-5 h-5 text-gray-800" />
-          Continue with GitHub
-        </button>
-      </div>
+      <OAuthLoginButtons />
 
       <div className="auth-divider">
         <span></span>Or continue with<span></span>
@@ -163,6 +136,7 @@ const SignUp = () => {
           />
         </div>
 
+        {/* Password Requirements */}
         <div className="text-sm grid gap-1 mt-2">
           {requirements.map((req) => (
             <div key={req.key} className="flex items-center gap-2">
@@ -182,7 +156,7 @@ const SignUp = () => {
           ))}
         </div>
 
-        {/* Admin Secret */}
+        {/* Admin Secret Field */}
         {form.role === "ADMIN" && (
           <input
             type="text"
