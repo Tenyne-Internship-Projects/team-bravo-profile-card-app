@@ -25,14 +25,14 @@ const ProfileCard = () => {
 
   const profile = {
     username: userData?.username || "freelancer",
-    fullName: userData?.fullName || "John Doe",
-    state: userData?.state || "Lagos",
-    country: userData?.country || "Nigeria",
+    fullName: userData?.fullName || "Please Edit your profile!",
+    state: userData?.state || "City needed",
+    country: userData?.country || "Country meeded",
     bio: userData?.bio || "No bio provided yet.",
-    avatar: userData?.avatar_url || "/assets/kconnect.png",
+    avatar: userData?.avatar_url || "/assets/user.png",
     skills: userData?.skills || [],
     tools: userData?.tools || [],
-    email: userData?.email || "user@email.com",
+    email: userData?.email || "please enter your email",
     phone: userData?.phone || "",
     github: userData?.github || "",
     linkedin: userData?.linkedin || "",
@@ -78,17 +78,35 @@ const ProfileCard = () => {
 
           {/* Bio + Location */}
           <p className="bio">{profile.bio}</p>
-          <p className="location">{profile.state}, {profile.country}</p>
+          <p className="location">
+            {profile.state}, {profile.country}
+          </p>
 
           {/* Contact Info */}
           <h3 className="section-title">Contact</h3>
           <div className="info-list">
             {[
-              { label: "Email", value: profile.email, link: `mailto:${profile.email}` },
-              { label: "Phone", value: profile.phone, link: `tel:${profile.phone}` },
-              { label: "Portfolio", value: profile.portfolio, link: profile.portfolio },
+              {
+                label: "Email",
+                value: profile.email,
+                link: `mailto:${profile.email}`,
+              },
+              {
+                label: "Phone",
+                value: profile.phone,
+                link: `tel:${profile.phone}`,
+              },
+              {
+                label: "Portfolio",
+                value: profile.portfolio,
+                link: profile.portfolio,
+              },
               { label: "GitHub", value: profile.github, link: profile.github },
-              { label: "LinkedIn", value: profile.linkedin, link: profile.linkedin },
+              {
+                label: "LinkedIn",
+                value: profile.linkedin,
+                link: profile.linkedin,
+              },
             ].map(
               ({ value, link }, i) =>
                 value && (
@@ -107,7 +125,9 @@ const ProfileCard = () => {
             <div className="badge-list">
               {profile.skills.length > 0 ? (
                 profile.skills.map((skill, i) => (
-                  <span key={i} className="badge">{skill}</span>
+                  <span key={i} className="badge">
+                    {skill}
+                  </span>
                 ))
               ) : (
                 <span className="empty">Not provided</span>
@@ -121,7 +141,9 @@ const ProfileCard = () => {
             <div className="badge-list">
               {profile.tools.length > 0 ? (
                 profile.tools.map((tool, i) => (
-                  <span key={i} className="badge">{tool}</span>
+                  <span key={i} className="badge">
+                    {tool}
+                  </span>
                 ))
               ) : (
                 <span className="empty">Not provided</span>
