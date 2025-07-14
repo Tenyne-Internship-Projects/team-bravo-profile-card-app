@@ -37,16 +37,21 @@ export const updateAvailability = async (availabilityData) => {
 export const uploadAvatar = async (avatarFile) => {
   const formData = new FormData();
   formData.append("avatar", avatarFile);
-  return await API.post(`${PROFILE_BASE}/upload-avatar`, formData);
+  return await API.post(`${PROFILE_BASE}/upload-avatar`, formData, {
+    withCredentials: true,
+  });
 };
 
-//  Upload document files
 export const uploadDocuments = async (documentFiles) => {
   const formData = new FormData();
-  documentFiles.forEach((file) => {
-    formData.append("documents", file);
+  documentFiles.forEach((file) => formData.append("documents", file));
+
+  return await API.post(`${PROFILE_BASE}/upload-documents`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    withCredentials: true,
   });
-  return await API.post(`${PROFILE_BASE}/upload-documents`, formData);
 };
 
 //  Delete a specific document by filename

@@ -14,14 +14,16 @@ const apiClient = axios.create({
   withCredentials: true, // Optional: only if using cookies
 });
 
-// Request: attach access token from localStorage
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+// // Request: attach access token from localStorage
+// apiClient.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("token");
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
 
-// Response: handle 401 errors by trying refresh
+// Handle 401 errors by attempting refresh
 apiClient.interceptors.response.use(
   (res) => res,
   async (error) => {
@@ -30,17 +32,22 @@ apiClient.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/login")
+      !originalRequest.url.includes("/auth/login") &&
+      !originalRequest.url.includes("/auth/refresh-token")
     ) {
       originalRequest._retry = true;
+
       try {
-        const data = await refreshAuthToken();
-        localStorage.setItem("token", data.token);
-        originalRequest.headers.Authorization = `Bearer ${data.token}`;
-        return apiClient(originalRequest); // retry original request
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/auth/refresh-token`,
+          {},
+          { withCredentials: true }
+        );
+
+        // retry original request
+        return apiClient(originalRequest);
       } catch (refreshError) {
-        await logoutUser(); // optional: clear server session
-        localStorage.removeItem("token");
+        console.error("Token refresh failed:", refreshError);
         window.location.href = "/signin";
         return Promise.reject(refreshError);
       }

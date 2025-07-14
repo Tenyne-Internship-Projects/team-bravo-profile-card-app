@@ -13,7 +13,6 @@ import Onboarding from "./pages/Onboarding";
 import Emailverify from "./pages/Emailverify";
 import Resetpswd from "./pages/Resetpswd";
 import ConfirmReset from "./pages/ConfirmReset";
-import Profilecard from "./pages/Profilecard";
 import EditProfile from "./pages/EditProfile";
 import ErrorPage from "./pages/ErrorPage";
 import Projects from "./pages/Projects";
@@ -146,15 +145,14 @@ const App = () => {
         />
 
         {/* Public Projects Page (visible without login) */}
-<Route
-  path="/projects"
-  element={
-    <PublicRoute>
-      <Projects />  {/* No MainLayout here */}
-    </PublicRoute>
-  }
-/>
-
+        <Route
+          path="/projects"
+          element={
+            <PublicRoute>
+              <Projects /> {/* No MainLayout here */}
+            </PublicRoute>
+          }
+        />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
@@ -162,7 +160,7 @@ const App = () => {
             path="/profile"
             element={
               <MainLayout>
-                <Profilecard />
+                <Profile />
               </MainLayout>
             }
           />
@@ -174,13 +172,13 @@ const App = () => {
               </MainLayout>
             }
           />
-           {/* Dashboard Routes - Nested Layout */}
-    <Route path="/dashboard" element={<DashboardLayout />}>
-      <Route index element={<DashboardHome />} />
-      <Route path="profile" element={<Profile />} />
-      <Route path="files" element={<Files />} />
-      {/* Add more dashboard routes here */}
-       </Route>
+          {/* Dashboard Routes - Nested Layout */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="files" element={<Files />} />
+            {/* Add more dashboard routes here */}
+          </Route>
         </Route>
 
         {/* 404 fallback */}

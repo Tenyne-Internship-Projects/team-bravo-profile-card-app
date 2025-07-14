@@ -1,5 +1,6 @@
+// src/context/AppContext.jsx
 import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "@/api/apiClient";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { logoutUser as logoutApi } from "../api/authApi";
@@ -13,32 +14,14 @@ export const AppContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const getUserData = async () => {
-    try {
-      const { data } = await axios.get(`${backendUrl}/api/profile/data`, {
-        withCredentials: true,
-      });
-      if (data.success) {
-        setUserData(data.userData);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  //  Minimal auth check (calls /api/auth/is-auth)
   const getAuthState = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`, {
-        withCredentials: true,
-      });
+      const { data } = await apiClient.get("/api/auth/is-auth");
 
       if (data.success) {
         setIsLoggedIn(true);
-        setUserData(data.userData); // <- use data directly here
+        setUserData(data.userData); // contains id, email, role, etc.
       } else {
         setIsLoggedIn(false);
       }
@@ -49,18 +32,34 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  //  Full profile fetch (calls /api/profile/data) — use in pages only
+  const getUserData = async () => {
+    try {
+      const { data } = await apiClient.get("/api/profile/data");
+
+      if (data.success) {
+        setUserData(data.profile);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
+  };
+
   const logoutUser = async () => {
     try {
       await logoutApi();
       setIsLoggedIn(false);
       setUserData(null);
-      localStorage.removeItem("token");
+      localStorage.removeItem("token"); // optional
       toast.success("Logged out successfully");
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
     }
   };
 
+  // Only check basic auth on app load — fast
   useEffect(() => {
     getAuthState();
   }, []);
