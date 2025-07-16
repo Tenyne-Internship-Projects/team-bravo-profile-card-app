@@ -4,7 +4,7 @@ on:
   push:
     branches: ["**"]
   pull_request:
-    branches: ["master", "dev"]
+    branches: ["main", "dev"]
 
 jobs:
   build-and-test:
@@ -13,9 +13,6 @@ jobs:
     defaults:
       run:
         working-directory: server
-
-    env:
-      DATABASE_URL: ${{ secrets.POSTGRES_URI }}
 
     steps:
       - name: Checkout code
@@ -28,12 +25,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Generate Prisma client
-        run: npx prisma generate
-
-      - name: Run database migrations
-        run: npx prisma migrate deploy
 
       - name: Lint code
         run: |
