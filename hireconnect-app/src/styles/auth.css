@@ -1,0 +1,213 @@
+.auth-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  width: 100%;
+}
+
+.auth-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1.5rem; /* Increased padding around the form */
+  gap: 1.5rem;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.95
+  ); /* Slight white background to separate from pattern */
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Soft elevation */
+  max-width: 36rem; /* Optional: limits form width */
+  margin: 2rem; /* Adds spacing around the form block */
+}
+
+.auth-title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  color: #4d0892;
+  text-align: center;
+}
+
+.auth-description {
+  color: #4a4a4a; /* text-gray-700 */
+  text-align: center;
+  max-width: 28rem; /* max-w-md */
+  line-height: 1.6;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center; /* Center inputs/buttons horizontally */
+}
+
+.auth-input {
+  width: 100%; /* Ensure full width */
+  border: 2px solid #302b63;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.95
+  ); /* Light background for contrast */
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  outline: none;
+  color: #333;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-input:focus {
+  border-color: #4d0892;
+  box-shadow: 0 0 0 3px rgba(77, 8, 146, 0.2); /* purple focus ring */
+}
+
+.auth-button {
+  width: 100%; /* match input width */
+  background-color: #302b63;
+  color: white;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.auth-button:hover {
+  transform: scale(1.05);
+}
+
+.auth-button-alt {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.auth-footer {
+  font-size: 0.875rem;
+  color: #302b63;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-footer span {
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.auth-button-alt {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #f9fafb; /* gray-50 */
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.auth-button-alt:hover {
+  background-color: #f3f4f6; /* gray-100 */
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-size: 0.875rem;
+  color: #6b7280; /* gray-500 */
+  margin: 1rem 0;
+}
+
+.auth-divider span {
+  flex: 1;
+  height: 1px;
+  background-color: #d1d5db; /* gray-300 */
+}
+
+.auth-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: #9ca3af; /* gray-400 */
+}
+
+.email-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  border: 1px solid #d1d5db; /* Tailwind: border-gray-300 */
+  border-radius: 0.375rem; /* Tailwind: rounded-md */
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.email-input:focus {
+  border-color: #4d0892; /* Match your brand color */
+  box-shadow: 0 0 0 1px #4d0892;
+}
+
+.otp-input-box {
+  width: 28px;
+  height: 28px;
+  margin-top: 0.25rem;
+  font-size: 14px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  margin: 0 8px;
+  margin-bottom: 1.5rem;
+  color: #4d0892;
+  outline: none;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.otp-input-box:focus {
+  border-color: #4d0892;
+  box-shadow: 0 0 0 1px #4d0892;
+}
+
+.resend-email-wrapper {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 28rem; /* matches max-w-md */
+}
+
+.resend-email-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem; /* px-3 py-2 */
+  font-size: 1rem;
+  border: 1px solid #d1d5db; /* Tailwind: border-gray-300 */
+  border-radius: 0.375rem; /* Tailwind: rounded */
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.resend-email-input:focus {
+  border-color: #4d0892;
+  box-shadow: 0 0 0 1px #4d0892;
+}
