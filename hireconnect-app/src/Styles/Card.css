@@ -1,0 +1,38 @@
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.2s ease;
+  display: block;
+}
+
+.card:hover {
+  box-shadow: 0 15px 15px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 640px) {
+  .card {
+    width: 48%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    width: 45%;
+  }
+}
+
+.card-title {
+  color: #6b7280; 
+  font-size: 0.875rem; 
+  margin-bottom: 0.5rem;
+}
+
+.card-value {
+  font-size: 1.5rem; 
+  font-weight: bold;
+  color: #4d0892;
+}
