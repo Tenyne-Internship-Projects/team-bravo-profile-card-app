@@ -1,0 +1,16 @@
+.timeline-container {
+  flex: 1;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.timeline-title {
+  font-size: 1.125rem; 
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.chart-container {
+  height: 17.5rem; 
+  position: relative;
+}

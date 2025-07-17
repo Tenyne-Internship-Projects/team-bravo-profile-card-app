@@ -1,0 +1,95 @@
+.cards-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.success-card {
+  width: 100%;
+  border: 2px solid #d1d5db; 
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+  text-align: center;
+  color: #065f46; 
+  padding: 1.5rem;
+  cursor: pointer;
+}
+
+.success-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.success-percentage {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.success-button {
+  color: #047857; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.overview-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .overview-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.overview-card {
+  border: 2px solid #d1d5db;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 10rem;
+  text-align: center;
+}
+
+.overview-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.overview-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.overview-note {
+  font-size: 0.875rem;
+  color: #4b5563; 
+}
+
+.text-green {
+  color: #065f46;
+}
+
+.text-green-light {
+  color: #34d399;
+  margin-left: 2rem;
+}
+
+.text-red {
+  color: #ff2c2c;
+}
+
+.text-purple {
+  color: #4d0892;
+}
+
+.decline-button {
+  color: #dc2626;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}

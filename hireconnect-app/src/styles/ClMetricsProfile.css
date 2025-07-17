@@ -1,0 +1,73 @@
+.metrics-container {
+  min-height: 100vh;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.metrics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcome-text {
+  font-size: 1.875rem; 
+  font-weight: 600;
+  color: #5603ad;
+}
+
+.notification-wrapper {
+  position: relative;
+}
+
+.notification-button {
+  font-size: 1.5rem; 
+  position: relative;
+  top: -4rem;
+  margin-right: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.notification-count {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  font-size: 0.75rem;
+  background-color: #dc2626; 
+  color: white;
+  padding: 0 0.375rem;
+  border-radius: 9999px;
+}
+
+.notification-dropdown {
+  position: absolute;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 12rem;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 0.375rem;
+  z-index: 10;
+}
+
+.dropdown-item {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.chart-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .chart-sections {
+    flex-direction: row;
+  }
+}

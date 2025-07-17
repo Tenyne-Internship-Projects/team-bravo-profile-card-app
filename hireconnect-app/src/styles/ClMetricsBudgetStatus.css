@@ -1,0 +1,21 @@
+.budget-container {
+  flex: 1;
+  text-align: center;
+  margin-left: 25rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.budget-title {
+  font-size: 1.875rem; 
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #4d0892;
+}
+
+.chart-wrapper {
+  width: 16rem;  
+  height: 16rem; 
+  margin-left: auto;
+  margin-right: auto;
+}
