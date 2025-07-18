@@ -1,0 +1,140 @@
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem 5rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  max-width: 1080px;
+  width: 100%;
+  margin: 1rem auto;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ─── Top Row ───────────────────────────────────────────── */
+.project-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo-placeholder {
+  background-color: #ede9fe;
+  color: #7c3aed;
+  font-weight: bold;
+  font-size: 1.25rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-title-section {
+  flex: 1;
+  margin-left: 0.5rem;
+}
+
+.project-company {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.project-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.project-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.details-icon-btn {
+  font-size: 1.2rem;
+  background-color: #ede9fe;
+  color: #7c3aed;
+  border: none;
+  padding: 0.4rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.details-icon-btn:hover {
+  background-color: #ddd6fe;
+}
+
+.apply-btn {
+  background-color: #7c3aed;
+  color: white;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.apply-btn:hover {
+  background-color: #6d28d9;
+}
+
+/* ─── Skills Row ────────────────────────────────────────── */
+.project-skills-row {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.project-skill {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-right: 4px;
+  font-size: 0.75rem;
+  display: inline-block;
+}
+
+/* ─── Bottom Row ───────────────────────────────────────── */
+.project-meta-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.job-id {
+  opacity: 0.6;
+}
+
+/* ─── Responsive ───────────────────────────────────────── */
+@media screen and (max-width: 768px) {
+  .project-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-actions {
+    align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+
+  .project-meta-bottom {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}

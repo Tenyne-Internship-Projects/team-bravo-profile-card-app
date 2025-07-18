@@ -1,0 +1,36 @@
+/* src/styles/FavoriteToggle.css */
+
+.favorite-toggle-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.favorite-toggle-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.favorite-toggle-button:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.favorite-icon {
+  width: 24px;
+  height: 24px;
+  color: #9ca3af; /* Gray-400 default */
+  transition: color 0.3s ease;
+}
+
+.favorite-toggle-button.favorited .favorite-icon {
+  color: #ef4444; /* Tailwind red-500 */
+}
+
+.favorite-toggle-button:not(.favorited):hover .favorite-icon {
+  color: #f87171; /* Tailwind red-400 on hover */
+}

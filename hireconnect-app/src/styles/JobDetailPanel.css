@@ -1,0 +1,124 @@
+.job-detail-panel {
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background-color: white;
+  border-left: 1px solid #e5e7eb;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 40;
+}
+
+@media (min-width: 768px) {
+  .job-detail-panel {
+    position: relative;
+    width: 450px;
+  }
+}
+
+.job-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.job-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #6b21a8; /* text-purple-800 */
+}
+
+.job-close-btn {
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.job-close-btn:hover {
+  color: #7c3aed;
+}
+
+.job-meta {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.job-meta p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.job-budget {
+  color: #7c3aed;
+}
+
+.job-section {
+  margin-bottom: 1rem;
+}
+
+.job-section-title {
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.job-section-text {
+  font-size: 0.875rem;
+  color: #374151;
+  white-space: pre-line;
+}
+
+.job-skills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.job-skill {
+  background-color: #ede9fe;
+  color: #7c3aed;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+.job-attachments {
+  margin-bottom: 1rem;
+}
+
+.job-attachments ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+  color: #2563eb;
+}
+
+.job-attachments a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.job-attachments a:hover {
+  text-decoration: underline;
+}
+
+.job-apply-btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  background-color: #6b21a8;
+  color: white;
+  padding: 0.5rem 0;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s ease;
+}
+
+.job-apply-btn:hover {
+  background-color: #581c87;
+}
