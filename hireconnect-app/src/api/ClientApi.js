@@ -1,4 +1,4 @@
-import apiClient from "./ApiClient";
+import apiClient from "../api/apiClient";
 
 /**
  * Get logged-in client's profile
