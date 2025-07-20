@@ -11,7 +11,7 @@ if (!BASE_URL) {
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // Optional: only if using cookies
+  withCredentials: true,
 });
 
 apiClient.interceptors.response.use(
