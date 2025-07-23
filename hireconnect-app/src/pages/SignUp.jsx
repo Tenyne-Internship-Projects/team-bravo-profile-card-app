@@ -77,12 +77,6 @@ const SignUp = () => {
     <AuthLayout backTo="/">
       <h1 className="auth-title">Create your account</h1>
 
-      <OAuthLoginButtons />
-
-      <div className="auth-divider">
-        <span></span>Or continue with<span></span>
-      </div>
-
       <form onSubmit={handleSubmit} className="auth-form">
         <div className="relative">
           <User className="auth-icon" />

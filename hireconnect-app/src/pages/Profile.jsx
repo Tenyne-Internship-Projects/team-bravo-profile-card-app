@@ -46,8 +46,9 @@ const Profile = () => {
   const profileData = userData?.profile || {};
 
   const profile = {
-    username: profileData.username,
     fullName: profileData.fullName,
+    username: profileData.username,
+    profession: profileData.role === "FREELANCER" ? "" : profileData.role,
     state: profileData.state,
     country: profileData.country,
     bio: profileData.bio,
@@ -174,6 +175,18 @@ const Profile = () => {
                 <span className="field-label">Username</span>
                 <span className="field-value">
                   @{profile.username || <span className="empty">N/A</span>}
+                </span>
+              </div>
+            </div>
+            <div className="profile-section">
+              <div className="field-row">
+                <span className="field-label">Profession</span>
+                <span className="field-value">
+                  {profile.profession && profile.profession !== "FREELANCER" ? (
+                    profile.profession
+                  ) : (
+                    <span className="empty">What You Do Here!</span>
+                  )}
                 </span>
               </div>
             </div>

@@ -18,6 +18,7 @@ import EditCLProfile from "./pages/EditCLProfile";
 import ErrorPage from "./pages/ErrorPage";
 import Projects from "./pages/Projects";
 import DashboardLayout from "@/layout/DashboardLayout";
+import OAuthSuccess from "./pages/OAuthSuccess";
 import DashboardHome from "@/pages/DashboardHome";
 import Profile from "@/pages/Profile";
 import ClientDashboard from "./pages/ClientDashboard";
@@ -58,7 +59,7 @@ const App = () => {
     handleOAuthRedirect();
   }, [location.pathname, navigate]);
 
-  return (
+    return (
     <>
       <ToastContainer />
 
@@ -95,6 +96,17 @@ const App = () => {
             </PublicRoute>
           }
         />
+        <Route
+          path="/oauth-success"
+          element={
+            <PublicRoute>
+              <PublicLayout>
+                <OAuthSuccess />
+              </PublicLayout>
+            </PublicRoute>
+          }
+        />
+
         <Route
           path="/onboarding"
           element={

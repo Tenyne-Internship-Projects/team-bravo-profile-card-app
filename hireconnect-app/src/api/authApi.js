@@ -86,3 +86,18 @@ export const refreshAuthToken = async () => {
     throw new Error(err.response?.data?.message || "Token refresh failed");
   }
 };
+
+export const loginWithGoogle = async (googleToken) => {
+  try {
+    const res = await apiClient.post("/api/auth/google/token", {
+      id_token: googleToken,
+    });
+
+    return res.data;
+  } catch (error) {
+    console.error("Google login failed:", error);
+    throw error;
+  }
+};
+
+

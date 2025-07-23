@@ -21,6 +21,7 @@ const EditProfile = () => {
     fullName: "",
     username: "",
     email: "",
+    profession: "",
     contact: "",
     country: "",
     state: "",
@@ -35,9 +36,12 @@ const EditProfile = () => {
 
   useEffect(() => {
     if (userData) {
+      const isDefaultRole = userData.role === "FREELANCER";
+
       setForm({
         fullName: userData.fullName || "",
         username: userData.username || "",
+        profession: isDefaultRole ? "" : userData.role || "",
         email: userData.email || "",
         contact: userData.phone || "",
         country: userData.country || "",
@@ -66,6 +70,7 @@ const EditProfile = () => {
     const payload = {
       fullName: form.fullName,
       username: form.username,
+      role: form.profession.trim(),
       email: form.email,
       phone: form.contact,
       country: form.country,
@@ -130,6 +135,7 @@ const EditProfile = () => {
     if (
       !form.fullName ||
       !form.username ||
+      !form.profession ||
       !form.email ||
       !form.country ||
       !form.state
@@ -227,6 +233,15 @@ const EditProfile = () => {
                 placeholder="Username"
                 required
               />
+              <input
+                type="text"
+                name="profession"
+                value={form.profession}
+                onChange={handleChange}
+                placeholder="What You Do Here!"
+                required
+              />
+
               <input
                 type="email"
                 name="email"

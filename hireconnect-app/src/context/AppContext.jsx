@@ -84,7 +84,12 @@ export const AppContextProvider = ({ children }) => {
 
   // Only check basic auth on app load — fast
   useEffect(() => {
-    getAuthState();
+    const token = localStorage.getItem("token");
+    if (token) {
+      getAuthState();
+    } else {
+      setLoading(false); // Avoid infinite spinner when not logged in
+    }
   }, []);
 
   const value = {

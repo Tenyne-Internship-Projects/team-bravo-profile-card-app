@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import AuthLayout from "../layout/AuthLayout";
-import { loginUser } from "../api/authApi";
+import { loginUser, loginWithGoogle } from "../api/authApi";
+
 import { toast } from "react-toastify";
 import { AppContext } from "../context/AppContext";
 import OAuthLoginButtons from "../components/OAuthLoginButtons";
@@ -10,7 +11,11 @@ import "../styles/auth.css";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const { setIsLoggedIn, getUserData } = useContext(AppContext);
+  const {
+    setIsLoggedIn,
+    getUserData,
+    loginUser: loginUserWithContext,
+  } = useContext(AppContext);
 
   const [form, setForm] = useState({ email: "", password: "" });
 
@@ -21,15 +26,12 @@ const Signin = () => {
     e.preventDefault();
 
     try {
-      const data = await loginUser(form);
-      localStorage.setItem("token", data.token);
-      toast.success("Login successful!");
+      // Call loginUser from AppContext, not directly from authApi
+      const user = await loginUserWithContext(form); // this sets token + state
 
-      setIsLoggedIn(true);
+      // Then fetch profile data (optional if needed here)
       await getUserData?.();
 
-      // Redirect based on role
-      const user = await getUserData?.();
       if (user?.role === "client") {
         navigate("/client/dashboard");
       } else {
@@ -40,12 +42,33 @@ const Signin = () => {
     }
   };
 
+  const handleGoogleLogin = async (googleToken) => {
+    try {
+      const { user, accessToken } = await loginWithGoogle(googleToken);
+
+      localStorage.setItem("token", accessToken);
+      toast.success(`Welcome, ${user.name || user.email}`);
+
+      setIsLoggedIn(true);
+      await getUserData?.();
+
+      if (user?.role === "client") {
+        navigate("/client/dashboard");
+      } else {
+        navigate("/profile");
+      }
+    } catch (err) {
+      toast.error("Google login failed");
+      console.error(err);
+    }
+  };
+
   return (
     <AuthLayout backTo="/signup">
       <h1 className="auth-title">Sign in to your account</h1>
 
       {/* Reusable OAuth buttons */}
-      <OAuthLoginButtons />
+      <OAuthLoginButtons onGoogleLogin={handleGoogleLogin} />
 
       {/* Divider */}
       <div className="auth-divider">
