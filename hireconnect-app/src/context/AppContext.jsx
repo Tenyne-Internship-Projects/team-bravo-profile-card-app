@@ -88,7 +88,7 @@ export const AppContextProvider = ({ children }) => {
     if (token) {
       getAuthState();
     } else {
-      setLoading(false); // Avoid infinite spinner when not logged in
+      setLoading(false);
     }
   }, []);
 
